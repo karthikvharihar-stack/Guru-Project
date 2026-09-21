@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}{{ article.title }} — Granthalaya | Uttaradi Math{% endblock %}
+
+{% block content %}
+<section style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); padding: 70px 20px 50px; text-align: center; margin-top: 70px;">
+  <div class="container">
+    <div style="font-size: 2rem; margin-bottom: 12px;">📄</div>
+    <h1 class="font-serif" style="color: white; font-size: 2.3rem; margin-bottom: 8px;">{{ article.title }}</h1>
+    {% if article.author %}
+      <p style="color: var(--color-gold); font-size: 1.1rem; margin-bottom: 12px;">By {{ article.author }}</p>
+    {% endif %}
+    <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+      {% if article.category %}
+        <span style="background: rgba(201,146,42,0.25); color: #fff; border: 1px solid var(--color-gold); padding: 4px 14px; border-radius: 20px; font-size: 0.85rem;">
+          {{ article.category }}
+        </span>
+      {% endif %}
+      {% if article.language %}
+        <span style="background: rgba(255,255,255,0.15); color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 0.85rem;">
+          {{ article.language }}
+        </span>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<div class="container" style="max-width: 860px; padding: 50px 20px 80px;">
+  <div class="guru-card" style="padding: 40px;">
+    <div style="font-size: 1.05rem; line-height: 1.9; color: var(--color-text); margin-bottom: 40px; white-space: pre-line;">
+      {{ article.content }}
+    </div>
+
+    {% if article.tags %}
+      <div style="margin-bottom: 30px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+        <span style="font-size: 0.85rem; color: var(--color-text-muted);">Tags:</span>
+        {% for tag in article.tags.split(',') %}
+          <span style="font-size: 0.8rem; background: var(--color-card); border: 1px solid var(--color-border); padding: 2px 10px; border-radius: 12px; color: var(--color-text-muted);">
+            #{{ tag.strip() }}
+          </span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div style="border-top: 1px solid var(--color-border); padding-top: 24px;">
+      <a href="{{ url_for('granthalaya.index') }}" class="btn btn-outline" style="padding: 10px 20px;">
+        ← Back to Granthalaya
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'admin/base.html' %}
+{% block admin_title %}Dashboard{% endblock %}
+{% block content %}
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
+  <div class="admin-card">
+    <h3 style="color: var(--color-secondary); font-size: 1rem;">Total Users</h3>
+    <p style="font-size: 2rem; color: var(--color-primary); font-weight: bold;">{{ stats.users | default(0) }}</p>
+  </div>
+  <div class="admin-card">
+    <h3 style="color: var(--color-secondary); font-size: 1rem;">Lekhana Sessions</h3>
+    <p style="font-size: 2rem; color: var(--color-primary); font-weight: bold;">{{ stats.sessions | default(0) }}</p>
+  </div>
+  <div class="admin-card">
+    <h3 style="color: var(--color-secondary); font-size: 1rem;">Verified Gurus</h3>
+    <p style="font-size: 2rem; color: var(--color-primary); font-weight: bold;">{{ stats.gurus | default(0) }}</p>
+  </div>
+</div>
+
+<div class="admin-card">
+  <h3>Recent Activity</h3>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Action</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for activity in recent_activities %}
+      <tr>
+        <td>{{ activity.user_name }}</td>
+        <td>{{ activity.action }}</td>
+        <td>{{ activity.date }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3">No recent activity.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

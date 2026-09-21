@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}My Seva Dashboard | Uttaradi Math{% endblock %}
+{% block content %}
+
+<section style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); padding: 60px 20px 50px; margin-top: 70px;">
+  <div class="container">
+    <h1 class="font-serif" style="color: white; font-size: 2.2rem; margin-bottom: 8px;">
+      Namaskara, {{ current_user.name }}
+    </h1>
+    <p style="color: rgba(253,246,227,0.75);">Your personal Guru Seva record</p>
+  </div>
+</section>
+
+<div class="container" style="padding: 50px 20px;">
+
+  <!-- Stats row -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; margin-bottom: 48px;">
+    <div class="guru-card" style="text-align: center; padding: 24px;">
+      <div class="font-serif" style="font-size: 2.5rem; color: var(--color-primary);">{{ stats.total_lekhana }}</div>
+      <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">Total Lekhana</div>
+    </div>
+    <div class="guru-card" style="text-align: center; padding: 24px;">
+      <div class="font-serif" style="font-size: 2.5rem; color: var(--color-primary);">{{ stats.gurus_count }}</div>
+      <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">Gurus</div>
+    </div>
+    <div class="guru-card" style="text-align: center; padding: 24px;">
+      <div class="font-serif" style="font-size: 2.5rem; color: var(--color-gold);">{{ stats.completed_targets }}</div>
+      <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">Completed</div>
+    </div>
+    <div class="guru-card" style="text-align: center; padding: 24px;">
+      <div class="font-serif" style="font-size: 2.5rem; color: var(--color-saffron);">{{ stats.active_sessions }}</div>
+      <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">In Progress</div>
+    </div>
+  </div>
+
+  <!-- Active sessions -->
+  {% if active_sessions %}
+  <div style="margin-bottom: 48px;">
+    <h2 class="font-serif" style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 20px;">Continue Your Seva</h2>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      {% for s in active_sessions %}
+      <div style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 14px; padding: 20px 24px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <img src="{{ s.guru.image_url or url_for('static', filename='images/placeholder-guru.svg') }}"
+             alt="{{ s.guru.name }}"
+             style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-gold); flex-shrink: 0;">
+        <div style="flex: 1; min-width: 160px;">
+          <h4 class="font-serif" style="color: var(--color-primary); margin-bottom: 4px;">{{ s.guru.name }}</h4>
+          <div style="background: var(--color-border); border-radius: 4px; height: 8px; overflow: hidden; margin-bottom: 4px;">
+            <div style="height: 100%; width: {{ s.progress_percent }}%; background: linear-gradient(90deg, var(--color-primary), var(--color-gold)); transition: width 0.5s;"></div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--color-text-muted);">{{ s.completed_count }} / {{ s.target_count }} • {{ s.progress_percent }}%</div>
+        </div>
+        <span style="background: rgba(201,146,42,0.1); color: var(--color-gold); padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; flex-shrink: 0;">In Progress</span>
+        <a href="{{ url_for('lekhana.pad', uuid=s.session_uuid) }}" class="btn btn-primary" style="padding: 9px 18px; font-size: 0.9rem; flex-shrink: 0;">Continue</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Seva history (Guru-wise progress) -->
+  <div style="margin-bottom: 40px;">
+    <h2 class="font-serif" style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 20px;">Guru Seva History</h2>
+
+    {% if progress_records %}
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      {% for p in progress_records %}
+      <div style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 14px; padding: 20px 24px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <img src="{{ p.guru.image_url or url_for('static', filename='images/placeholder-guru.svg') }}"
+             alt="{{ p.guru.name }}"
+             style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-border); flex-shrink: 0;">
+        <div style="flex: 1; min-width: 160px;">
+          <h4 class="font-serif" style="color: var(--color-primary); margin-bottom: 2px;">{{ p.guru.name }}</h4>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">Total Lekhana: <strong style="color: var(--color-text);">{{ p.total_completed }}</strong></div>
+        </div>
+        <a href="{{ url_for('lekhana.selection', guru_slug=p.guru.slug) }}" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem; flex-shrink: 0;">
+          Continue Seva
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div style="text-align: center; padding: 60px 20px; background: var(--color-card); border: 1px solid var(--color-border); border-radius: 16px;">
+      <div style="font-size: 2.5rem; margin-bottom: 16px;">🪷</div>
+      <h3 class="font-serif" style="color: var(--color-primary); margin-bottom: 12px;">Begin Your First Lekhana Seva</h3>
+      <p style="color: var(--color-text-muted); margin-bottom: 28px; max-width: 400px; margin-left: auto; margin-right: auto;">
+        Select a Guru from the Parampara and perform your first devotional Lekhana Seva.
+      </p>
+      <a href="{{ url_for('lekhana.index') }}" class="btn btn-primary">Start Lekhana Seva</a>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}

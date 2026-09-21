@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="padding: 60px 15px; max-width: 600px;">
+  <h1 class="font-serif text-center" style="margin-bottom: 40px;">Contact Us</h1>
+  
+  <div class="guru-card">
+    <p style="margin-bottom: 20px; text-align: center;">If you have any questions or feedback regarding the platform, please reach out to us.</p>
+    
+    <form method="POST">
+      {{ form.csrf_token if form else '' }}
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea name="message" class="form-control" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

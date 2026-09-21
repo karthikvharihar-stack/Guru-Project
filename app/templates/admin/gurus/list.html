@@ -1,0 +1,43 @@
+{% extends 'admin/base.html' %}
+{% block admin_title %}Manage Gurus{% endblock %}
+{% block content %}
+
+<div style="margin-bottom: 20px;">
+  <a href="/admin/gurus/add" class="btn btn-primary">Add New Guru</a>
+</div>
+
+<div class="admin-card">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Name</th>
+        <th>Verified</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for guru in gurus %}
+      <tr>
+        <td>{{ guru.order }}</td>
+        <td>{{ guru.name }}</td>
+        <td>
+          {% if guru.is_verified %}
+            <span style="color: green; font-weight: bold;">Yes</span>
+          {% else %}
+            <span style="color: red; font-weight: bold;">No</span>
+          {% endif %}
+        </td>
+        <td>
+          <a href="/admin/gurus/edit/{{ guru.id }}" class="btn btn-outline" style="padding: 5px 10px;">Edit</a>
+          <a href="/admin/gurus/delete/{{ guru.id }}" class="btn btn-primary" style="padding: 5px 10px; background: #c62828;">Delete</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4">No Gurus found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

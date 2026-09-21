@@ -1,0 +1,254 @@
+[
+  {
+    "order": 1,
+    "name": "Sri Madhwacharya",
+    "slug": "sri-madhwacharya",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/0.jpg"
+  },
+  {
+    "order": 2,
+    "name": "Sri Padmanabha Tirtha",
+    "slug": "sri-padmanabha-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/1.jpg"
+  },
+  {
+    "order": 3,
+    "name": "Sri Narahari Tirtha",
+    "slug": "sri-narahari-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/2.jpg"
+  },
+  {
+    "order": 4,
+    "name": "Sri Madhava Tirtha",
+    "slug": "sri-madhava-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/3.jpg"
+  },
+  {
+    "order": 5,
+    "name": "Sri Akshobhya Tirtha",
+    "slug": "sri-akshobhya-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/4.jpg"
+  },
+  {
+    "order": 6,
+    "name": "Sri Jayateertha",
+    "slug": "sri-jayateertha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/5.jpg"
+  },
+  {
+    "order": 7,
+    "name": "Sri Vidyadhiraja Tirtha",
+    "slug": "sri-vidyadhiraja-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/6.jpg"
+  },
+  {
+    "order": 8,
+    "name": "Sri Kavindra Tirtha",
+    "slug": "sri-kavindra-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/7.jpg"
+  },
+  {
+    "order": 9,
+    "name": "Sri Vagisha Tirtha",
+    "slug": "sri-vagisha-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/8.jpg"
+  },
+  {
+    "order": 10,
+    "name": "Sri Ramachandra Tirtha",
+    "slug": "sri-ramachandra-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/9.jpg"
+  },
+  {
+    "order": 11,
+    "name": "Sri Vidyanidhi Tirtha",
+    "slug": "sri-vidyanidhi-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/10.jpg"
+  },
+  {
+    "order": 12,
+    "name": "Sri Raghunatha Tirtha",
+    "slug": "sri-raghunatha-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/11.jpg"
+  },
+  {
+    "order": 13,
+    "name": "Sri Raghuvarya Tirtha",
+    "slug": "sri-raghuvarya-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/12.jpg"
+  },
+  {
+    "order": 14,
+    "name": "Sri Raghuttama Tirtha",
+    "slug": "sri-raghuttama-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/13.jpg"
+  },
+  {
+    "order": 15,
+    "name": "Sri Vedavyasa Tirtha",
+    "slug": "sri-vedavyasa-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/14.jpg"
+  },
+  {
+    "order": 16,
+    "name": "Sri Vidyadhisha Tirtha",
+    "slug": "sri-vidyadhisha-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/15.jpg"
+  },
+  {
+    "order": 17,
+    "name": "Sri Vedanidhi Tirtha",
+    "slug": "sri-vedanidhi-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/16.jpg"
+  },
+  {
+    "order": 18,
+    "name": "Sri Satyavrata Tirtha",
+    "slug": "sri-satyavrata-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/17.jpg"
+  },
+  {
+    "order": 19,
+    "name": "Sri Satyanidhi Tirtha",
+    "slug": "sri-satyanidhi-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/18.jpg"
+  },
+  {
+    "order": 20,
+    "name": "Sri Satyanatha Tirtha",
+    "slug": "sri-satyanatha-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/19.jpg"
+  },
+  {
+    "order": 21,
+    "name": "Sri Satyabhinava Tirtha",
+    "slug": "sri-satyabhinava-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/20.jpg"
+  },
+  {
+    "order": 22,
+    "name": "Sri Satyapoorna Tirtha",
+    "slug": "sri-satyapoorna-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/21.jpg"
+  },
+  {
+    "order": 23,
+    "name": "Sri Satyavijaya Tirtha",
+    "slug": "sri-satyavijaya-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/22.jpg"
+  },
+  {
+    "order": 24,
+    "name": "Sri Satyapriya Tirtha",
+    "slug": "sri-satyapriya-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/23.jpg"
+  },
+  {
+    "order": 25,
+    "name": "Sri Satyabodha Tirtha",
+    "slug": "sri-satyabodha-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/24.jpg"
+  },
+  {
+    "order": 26,
+    "name": "Sri Satyasandha Tirtha",
+    "slug": "sri-satyasandha-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/25.jpg"
+  },
+  {
+    "order": 27,
+    "name": "Sri Satyavara Theertha",
+    "slug": "sri-satyavara-theertha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/26.jpg"
+  },
+  {
+    "order": 28,
+    "name": "Sri Satyadharma Tirtha",
+    "slug": "sri-satyadharma-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/27.jpg"
+  },
+  {
+    "order": 29,
+    "name": "Sri Satyasankalpa Tirtha",
+    "slug": "sri-satyasankalpa-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/28.jpg"
+  },
+  {
+    "order": 30,
+    "name": "Sri Satyasanthushta Theertha",
+    "slug": "sri-satyasanthushta-theertha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/29.jpg"
+  },
+  {
+    "order": 31,
+    "name": "Sri Satyaparayana Theertha",
+    "slug": "sri-satyaparayana-theertha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/30.jpg"
+  },
+  {
+    "order": 32,
+    "name": "Sri Satyakama Tirtha",
+    "slug": "sri-satyakama-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/31.jpg"
+  },
+  {
+    "order": 33,
+    "name": "Sri Sathyestha Tirtha",
+    "slug": "sri-sathyestha-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/32.jpg"
+  },
+  {
+    "order": 34,
+    "name": "Sri Satyaparakrama Tirtha",
+    "slug": "sri-satyaparakrama-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/33.jpg"
+  },
+  {
+    "order": 35,
+    "name": "Sri Satyaveera Tirtha",
+    "slug": "sri-satyaveera-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/34.jpg"
+  },
+  {
+    "order": 36,
+    "name": "Sri Satyadheera Tirtha",
+    "slug": "sri-satyadheera-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/35.jpg"
+  },
+  {
+    "order": 37,
+    "name": "Sri Satyajnana Tirtha",
+    "slug": "sri-satyajnana-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/36.jpg"
+  },
+  {
+    "order": 38,
+    "name": "Sri Satyadhyana Tirtha",
+    "slug": "sri-satyadhyana-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/37.jpg"
+  },
+  {
+    "order": 39,
+    "name": "Sri Satyapragna Tirtha",
+    "slug": "sri-satyapragna-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/38.jpg"
+  },
+  {
+    "order": 40,
+    "name": "Sri Satyabhijna Tirtha",
+    "slug": "sri-satyabhijna-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/39.jpg"
+  },
+  {
+    "order": 41,
+    "name": "Sri Satyapramoda Tirtha",
+    "slug": "sri-satyapramoda-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/40.jpg"
+  },
+  {
+    "order": 42,
+    "name": "Sri Satyatma Tirtha",
+    "slug": "sri-satyatma-tirtha",
+    "image_url": "https://cdn.umath.in/um-assets/parampara/images/41.jpg"
+  }
+]

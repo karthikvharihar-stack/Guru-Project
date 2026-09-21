@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block title %}Lekhana Seva — {{ guru.name }} | Uttaradi Math{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lekhana.css') }}">
+{% endblock %}
+{% block content %}
+
+<div style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); padding: 40px 20px 30px; margin-top: 70px;">
+  <div class="container" style="display: flex; gap: 20px; align-items: center;">
+    <img src="{{ guru.image_url or url_for('static', filename='images/placeholder-guru.svg') }}"
+         alt="{{ guru.name }}"
+         style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--color-gold); object-fit: cover; flex-shrink: 0;">
+    <div>
+      <div style="font-size: 0.8rem; color: rgba(253,246,227,0.7); margin-bottom: 4px;">LEKHANA SEVA</div>
+      <h2 class="font-serif" style="color: white; font-size: 1.6rem; line-height: 1.2;">{{ guru.name }}</h2>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="max-width: 750px; padding: 40px 20px 100px;">
+
+  <!-- Progress bar -->
+  <div class="lekhana-progress" id="progress-section">
+    <div>
+      <div class="progress-count"><span id="completed-count">{{ session.completed_count }}</span></div>
+      <div class="progress-label">Completed</div>
+    </div>
+    <div class="progress-bar-container" style="flex: 1;">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: {{ session.progress_percent }}%;"></div>
+      </div>
+      <div class="progress-percent"><span id="progress-pct">{{ session.progress_percent }}</span>% — Target: {{ session.target_count }}</div>
+    </div>
+    <div>
+      <div class="progress-count" style="color: var(--color-gold);">{{ session.target_count }}</div>
+      <div class="progress-label">Target</div>
+    </div>
+  </div>
+
+  <!-- Mode selector -->
+  <div class="mode-tabs">
+    <button class="mode-tab {% if session.mode == 'type' %}active{% endif %}" data-mode="type" onclick="switchMode('type')">✏️ Type</button>
+    <button class="mode-tab {% if session.mode == 'handwrite' %}active{% endif %}" data-mode="handwrite" onclick="switchMode('handwrite')">✍️ Handwrite</button>
+    <button class="mode-tab {% if session.mode == 'mobile' %}active{% endif %}" data-mode="mobile" onclick="switchMode('mobile')">📱 Mobile</button>
+  </div>
+
+  <!-- Lekhana reference text -->
+  <div class="lekhana-text-box" id="lekhana-ref">
+    <div style="font-size: 0.75rem; color: var(--color-text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;">Guru Lekhana</div>
+    {% if guru.lekhana_text and '[PLACEHOLDER' not in guru.lekhana_text and '[LEKHANA TEXT' not in guru.lekhana_text %}
+      <div class="lekhana-text font-serif" id="lekhana-display">{{ guru.lekhana_text }}</div>
+      {% if guru.lekhana_sanskrit and '[Awaiting' not in guru.lekhana_sanskrit %}
+        <div class="lekhana-sanskrit font-devanagari">{{ guru.lekhana_sanskrit }}</div>
+      {% endif %}
+    {% else %}
+      <div style="color: var(--color-text-muted); font-style: italic;">
+        The verified Lekhana text for {{ guru.name }} is being prepared.<br>
+        Handwrite mode is available for personal devotional practice.
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- === TYPE MODE === -->
+  <div class="mode-panel {% if session.mode == 'type' %}active{% endif %}" id="panel-type">
+    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 12px;">
+      Type the Lekhana text exactly as shown above, then click Submit.
+    </p>
+    <textarea 
+      id="type-input" 
+      class="type-input" 
+      placeholder="Type the Lekhana here..."
+      rows="3"
+      spellcheck="false"
+      autocorrect="off"
+      autocapitalize="off"></textarea>
+    <div class="type-input-hint" id="type-hint"></div>
+    <button id="btn-type-submit" class="btn btn-primary" style="width: 100%; margin-top: 16px; padding: 14px; font-size: 1rem;">
+      Submit & Next ›
+    </button>
+  </div>
+
+  <!-- === HANDWRITE MODE === -->
+  <div class="mode-panel {% if session.mode == 'handwrite' %}active{% endif %}" id="panel-handwrite">
+    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 12px;">
+      Write the Lekhana by hand. Use a mouse, touchscreen, or stylus.
+    </p>
+
+    <!-- Canvas toolbar -->
+    <div class="canvas-toolbar">
+      <div class="color-dots">
+        <span class="color-dot active" style="background: #2C1810;" data-color="#2C1810" title="Dark Brown"></span>
+        <span class="color-dot" style="background: #8B1A1A;" data-color="#8B1A1A" title="Maroon"></span>
+        <span class="color-dot" style="background: #1a237e;" data-color="#1a237e" title="Dark Blue"></span>
+        <span class="color-dot" style="background: #1b5e20;" data-color="#1b5e20" title="Dark Green"></span>
+      </div>
+      <input type="range" id="pen-size" class="pen-size" min="1" max="12" value="3" title="Pen size">
+      <button class="canvas-btn" id="btn-undo" title="Undo">↩ Undo</button>
+      <button class="canvas-btn" id="btn-redo" title="Redo">↪ Redo</button>
+      <button class="canvas-btn" id="btn-clear" title="Clear">✕ Clear</button>
+      <button class="canvas-btn btn-next" id="btn-draw-submit">Save & Next ›</button>
+    </div>
+
+    <div class="canvas-wrapper" id="canvas-wrapper" style="height: 350px;">
+      <canvas id="lekhana-canvas" style="width: 100%; height: 100%;"></canvas>
+    </div>
+  </div>
+
+  <!-- === MOBILE MODE === -->
+  <div class="mode-panel {% if session.mode == 'mobile' %}active{% endif %}" id="panel-mobile">
+    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 12px;">
+      Optimised for finger writing on touchscreens.
+    </p>
+    <div style="display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+      <button class="canvas-btn" id="mobile-btn-undo">↩ Undo</button>
+      <button class="canvas-btn" id="mobile-btn-clear">✕ Clear</button>
+      <button class="canvas-btn btn-next" id="btn-mobile-submit" style="flex: 1;">Save & Next ›</button>
+    </div>
+    <div class="canvas-wrapper" id="mobile-canvas-wrapper" style="height: 420px;">
+      <canvas id="lekhana-canvas-mobile" style="width: 100%; height: 100%;"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- Completion overlay -->
+<div id="completion-overlay" style="display: none; position: fixed; inset: 0; background: rgba(44,24,16,0.96); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px;">
+  <div style="font-size: 4rem; animation: pulseGold 2s infinite; margin-bottom: 24px;">🪷</div>
+  <h1 class="font-serif" style="color: var(--color-gold); font-size: 2.5rem; margin-bottom: 12px;">Lekhana Seva Completed</h1>
+  <p style="color: rgba(253,246,227,0.8); font-size: 1.1rem; margin-bottom: 8px;">{{ guru.name }}</p>
+  <p style="color: rgba(253,246,227,0.6); margin-bottom: 32px;">May the grace of the Guru Parampara bless this devotional effort.</p>
+  <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;">
+    <a id="btn-view-completion" href="#" class="btn btn-gold" style="padding: 14px 28px;">View Acknowledgement</a>
+    <a href="{{ url_for('seva.dashboard') }}" class="btn btn-outline" style="color: white; border-color: rgba(253,246,227,0.4); padding: 14px 28px;">My Seva Dashboard</a>
+  </div>
+</div>
+
+<!-- Data for JS -->
+<div id="lekhana-pad-root" style="display:none;"
+  data-session-uuid="{{ session.session_uuid }}"
+  data-guru-name="{{ guru.name }}"
+  data-lekhana-text="{{ guru.lekhana_text or '' }}"
+  data-target="{{ session.target_count }}"
+  data-completed="{{ session.completed_count }}"
+  data-mode="{{ session.mode }}"
+  data-done-url="{{ url_for('lekhana.done', uuid=session.session_uuid) }}"
+  data-entry-url="{{ url_for('lekhana.entry', uuid=session.session_uuid) }}"
+  data-complete-url="{{ url_for('lekhana.complete', uuid=session.session_uuid) }}"
+  data-csrf="{{ csrf_token() }}">
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/canvas.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lekhana.js') }}"></script>
+{% endblock %}

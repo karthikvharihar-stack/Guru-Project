@@ -1,0 +1,66 @@
+{% extends 'admin/base.html' %}
+{% block admin_title %}Manage Users{% endblock %}
+{% block page_title %}Devotee Users{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 24px;">
+  <p style="color: var(--color-text-muted); margin: 0;">Registered devotees participating in Guru Lekhana Seva.</p>
+</div>
+
+<div class="admin-card">
+  {% if users and users.items %}
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Language</th>
+          <th>Registered</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users.items %}
+          <tr>
+            <td>{{ u.id }}</td>
+            <td><strong>{{ u.name }}</strong></td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.preferred_language or 'en' }}</td>
+            <td>{{ u.created_at.strftime('%d %b %Y') if u.created_at else '—' }}</td>
+            <td>
+              <span class="badge {% if u.is_active %}badge-success{% else %}badge-danger{% endif %}">
+                {{ 'Active' if u.is_active else 'Disabled' }}
+              </span>
+            </td>
+            <td>
+              <form method="POST" action="{{ url_for('admin.user_toggle', user_id=u.id) }}" style="display: inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.85rem;">
+                  {{ 'Deactivate' if u.is_active else 'Activate' }}
+                </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if users.pages > 1 %}
+      <div style="display: flex; gap: 8px; justify-content: center; padding: 20px 0;">
+        {% for p in range(1, users.pages + 1) %}
+          <a href="{{ url_for('admin.users_list', page=p) }}" class="btn {% if p == users.page %}btn-primary{% else %}btn-outline{% endif %}" style="padding: 6px 12px; font-size: 0.85rem;">
+            {{ p }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  {% else %}
+    <div style="text-align: center; padding: 48px; color: var(--color-text-muted);">
+      <p>No devotee users registered yet.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

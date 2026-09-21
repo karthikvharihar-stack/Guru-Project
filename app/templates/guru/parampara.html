@@ -1,0 +1,509 @@
+{% extends 'base.html' %}
+{% block title %}Guru Parampara — Sri Uttaradi Math (42 Sacred Gurus){% endblock %}
+{% block description %}Sacred unbroken lineage of Sri Uttaradi Math from Sri Jagadguru Madhvacharya through Sri Satyatma Tirtha Swamiji.{% endblock %}
+
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Yatra+One&display=swap" rel="stylesheet">
+<style>
+  /* Devotional Gold Foil Design System */
+  :root {
+    --gold-foil-1: #BF953F;
+    --gold-foil-2: #FCF6BA;
+    --gold-foil-3: #B38728;
+    --gold-foil-4: #FBF5B7;
+    --gold-foil-5: #AA771C;
+    --gold-foil-gradient: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+    --gold-foil-text: linear-gradient(135deg, #784b00 0%, #c9922a 35%, #8B1A1A 70%, #593100 100%);
+  }
+
+  /* Shimmer animation */
+  @keyframes goldShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes divineAura {
+    0%, 100% { box-shadow: 0 0 15px rgba(201, 146, 42, 0.25), 0 8px 24px rgba(44, 24, 16, 0.08); }
+    50% { box-shadow: 0 0 28px rgba(201, 146, 42, 0.5), 0 12px 30px rgba(139, 26, 26, 0.15); }
+  }
+
+  /* Hero Section */
+  .parampara-hero {
+    background: radial-gradient(circle at 50% 30%, #4A1A1A 0%, #2A0E0E 50%, #170808 100%);
+    padding: 90px 20px 70px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 70px;
+    border-bottom: 3px solid #BF953F;
+  }
+
+  .parampara-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(201,146,42,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 85% 50%, rgba(201,146,42,0.15) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .invocation-sanskrit {
+    font-family: 'Yatra One', 'Noto Serif Devanagari', serif;
+    color: #FCF6BA;
+    font-size: 1.25rem;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  }
+
+  .parampara-hero-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    background: var(--gold-foil-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .parampara-hero-sub {
+    color: rgba(253, 246, 227, 0.85);
+    font-size: 1.1rem;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    max-width: 680px;
+    margin: 0 auto;
+    letter-spacing: 0.5px;
+  }
+
+  .gold-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 24px auto 0;
+    max-width: 320px;
+  }
+
+  .gold-divider::before, .gold-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold-foil-gradient);
+  }
+
+  /* Search & Filter Bar */
+  .filter-wrapper {
+    max-width: 500px;
+    margin: -24px auto 50px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .filter-input {
+    width: 100%;
+    padding: 16px 24px 16px 50px;
+    border-radius: 30px;
+    border: 2px solid var(--gold-foil-3);
+    background: #FFFDF9;
+    box-shadow: 0 8px 30px rgba(44, 24, 16, 0.15);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  .filter-input:focus {
+    border-color: #AA771C;
+    box-shadow: 0 0 20px rgba(201, 146, 42, 0.4);
+  }
+
+  .filter-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--gold-foil-3);
+  }
+
+  /* Sacred Guru Grid */
+  .guru-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 32px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  @media (min-width: 1200px) {
+    .guru-gallery-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 36px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .guru-gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      padding: 0 8px;
+    }
+  }
+
+  /* Sacred Foiled Card */
+  .guru-foiled-card {
+    position: relative;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF7 100%);
+    border-radius: 20px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 0 8px 24px rgba(44, 24, 16, 0.08);
+  }
+
+  /* Outer Gold Foil Border via pseudo-element */
+  .guru-foiled-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 22px;
+    background: var(--gold-foil-gradient);
+    z-index: -1;
+    transition: opacity 0.4s ease;
+    opacity: 0.85;
+  }
+
+  .guru-foiled-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(139, 26, 26, 0.2), 0 0 30px rgba(201, 146, 42, 0.5);
+  }
+
+  .guru-foiled-card:hover::before {
+    opacity: 1;
+    filter: brightness(1.15);
+  }
+
+  /* Sacred Arch / Prabhavali Image Container */
+  .guru-portrait-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 220px;
+    margin: 0 auto 16px;
+    border-radius: 120px 120px 18px 18px;
+    padding: 6px;
+    background: var(--gold-foil-gradient);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transition: transform 0.4s ease;
+  }
+
+  .guru-foiled-card:hover .guru-portrait-frame {
+    transform: scale(1.03);
+  }
+
+  .guru-portrait-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 114px 114px 14px 14px;
+    overflow: hidden;
+    background: #2C1810;
+    position: relative;
+  }
+
+  .guru-portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    display: block;
+    transition: transform 0.5s ease, filter 0.4s ease;
+    filter: brightness(1.02) contrast(1.05);
+  }
+
+  .guru-foiled-card:hover .guru-portrait-img {
+    transform: scale(1.08);
+  }
+
+  /* Shimmer Sheen overlay on hover */
+  .portrait-sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+    background-size: 200% 200%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .guru-foiled-card:hover .portrait-sheen {
+    opacity: 1;
+    animation: goldShimmer 1.5s infinite;
+  }
+
+  /* Order Badge */
+  .guru-order-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: radial-gradient(circle, #8B1A1A 0%, #591010 100%);
+    color: #FFF;
+    border: 2px solid #FCF6BA;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 14px;
+    letter-spacing: 1px;
+    z-index: 2;
+  }
+
+  /* Sacred Name Only */
+  .guru-sacred-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    color: #4A1A1A;
+    margin: 4px 0 6px;
+    padding: 0 4px;
+    transition: color 0.3s ease;
+  }
+
+  .guru-foiled-card:hover .guru-sacred-name {
+    color: #8B1A1A;
+  }
+
+  .guru-halo-icon {
+    font-size: 0.9rem;
+    color: var(--gold-foil-1);
+    margin-top: 4px;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .guru-foiled-card:hover .guru-halo-icon {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  /* Lightbox Modal */
+  .devotional-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(23, 8, 8, 0.94);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+  }
+
+  .devotional-modal.active {
+    display: flex;
+  }
+
+  .modal-content-card {
+    background: linear-gradient(135deg, #FFFDF9 0%, #FBF6EB 100%);
+    border: 3px solid #BF953F;
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(201, 146, 42, 0.4);
+    position: relative;
+    animation: divineAura 3s infinite;
+  }
+
+  .modal-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+
+  .modal-close-btn:hover {
+    transform: scale(1.2);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Sacred Devotional Hero -->
+<section class="parampara-hero">
+  <div class="container">
+    <div class="invocation-sanskrit">॥ श्री मूलरामो विजयते ॥</div>
+    <div style="font-size: 0.85rem; color: var(--gold-foil-2); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px;">
+      Sri Jagadguru Madhvacharya Moola Maha Samstanam
+    </div>
+    <h1 class="parampara-hero-title">Guru Parampara</h1>
+    <p class="parampara-hero-sub">
+      The Sacred and Unbroken Lineage of 42 Peethadhipatis of Sri Uttaradi Math
+    </p>
+    <div class="gold-divider">
+      <span style="color: var(--gold-foil-2); font-size: 1.2rem;">🪷</span>
+    </div>
+  </div>
+</section>
+
+<!-- Filter Search Bar -->
+<div class="container" style="padding: 0 20px;">
+  <div class="filter-wrapper">
+    <span class="filter-icon">🔍</span>
+    <input type="text" id="guruSearchInput" class="filter-input" placeholder="Search by Guru Name or Order # (e.g. Madhvacharya, 42, Satyatma)...">
+  </div>
+</div>
+
+<!-- Main Guru Parampara Gallery -->
+<div class="container" style="padding: 0 0 100px;">
+
+  {% if gurus %}
+  <div class="guru-gallery-grid" id="guruGalleryGrid">
+    {% for guru in gurus %}
+    <div class="guru-foiled-card fade-in" 
+         data-name="{{ guru.name | lower }}" 
+         data-order="{{ guru.guru_order }}"
+         onclick="openDevotionalModal('{{ guru.name }}', '{{ guru.image_url or url_for('static', filename='images/placeholder-guru.svg') }}', '{{ guru.guru_order }}', '{{ url_for('guru.profile', slug=guru.slug) }}', '{{ url_for('lekhana.selection', guru_slug=guru.slug) }}')">
+      
+      <!-- Order Badge -->
+      <span class="guru-order-badge">#{{ "%02d" % guru.guru_order }}</span>
+
+      <!-- Sacred Arched Portrait Frame -->
+      <div class="guru-portrait-frame">
+        <div class="guru-portrait-inner">
+          <img src="{{ guru.image_url or url_for('static', filename='images/placeholder-guru.svg') }}" 
+               alt="{{ guru.name }}" 
+               class="guru-portrait-img" 
+               loading="lazy">
+          <div class="portrait-sheen"></div>
+        </div>
+      </div>
+
+      <!-- Sacred Holy Name Only -->
+      <h3 class="guru-sacred-name">{{ guru.name }}</h3>
+      
+      <!-- Devotional Lotus Indicator -->
+      <div class="guru-halo-icon">🪷</div>
+
+    </div>
+    {% endfor %}
+  </div>
+
+  <div id="noResultsNotice" style="display: none; text-align: center; padding: 60px 20px;">
+    <div style="font-size: 2.5rem; margin-bottom: 12px;">🙏</div>
+    <h3 class="font-serif" style="color: var(--color-primary); margin-bottom: 8px;">No matching Guru found</h3>
+    <p style="color: var(--color-text-muted);">Please try searching by a different name or number from 1 to 42.</p>
+  </div>
+
+  {% else %}
+  <div style="text-align: center; padding: 80px 20px;">
+    <div style="font-size: 3rem; margin-bottom: 20px;">🪷</div>
+    <h2 class="font-serif" style="color: var(--color-primary); margin-bottom: 16px;">Guru Parampara</h2>
+    <p style="color: var(--color-text-muted);">Loading sacred lineage...</p>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- Sacred Devotional View Modal -->
+<div class="devotional-modal" id="devotionalModal" onclick="closeDevotionalModal(event)">
+  <div class="modal-content-card" onclick="event.stopPropagation()">
+    <button class="modal-close-btn" onclick="closeDevotionalModal()">&times;</button>
+    
+    <div style="display: inline-block; background: var(--gold-foil-gradient); padding: 2px 14px; border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 700; color: #3A1010; margin-bottom: 16px;" id="modalOrder">
+      GURU #01
+    </div>
+
+    <!-- Frame -->
+    <div style="width: 200px; height: 200px; margin: 0 auto 20px; border-radius: 100px 100px 16px 16px; padding: 5px; background: var(--gold-foil-gradient); box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+      <div style="width: 100%; height: 100%; border-radius: 95px 95px 12px 12px; overflow: hidden; background: #2C1810;">
+        <img id="modalImg" src="" alt="Guru" style="width: 100%; height: 100%; object-fit: cover;">
+      </div>
+    </div>
+
+    <h2 class="font-serif" style="color: var(--color-primary); font-size: 1.7rem; margin-bottom: 8px;" id="modalName">
+      Sri Guru Name
+    </h2>
+    <div style="color: var(--gold-foil-3); font-size: 1.1rem; margin-bottom: 24px;">॥ श्री हरिः ॐ ॥</div>
+
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a id="modalProfileBtn" href="#" class="btn btn-outline" style="padding: 10px 20px; font-size: 0.95rem;">
+        View Sacred Profile
+      </a>
+      <a id="modalLekhanaBtn" href="#" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.95rem;">
+        ✍️ Begin Lekhana Seva
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Live Search Filter
+document.getElementById('guruSearchInput')?.addEventListener('input', function(e) {
+  const query = e.target.value.trim().toLowerCase();
+  const cards = document.querySelectorAll('.guru-foiled-card');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const name = card.dataset.name || '';
+    const order = card.dataset.order || '';
+    if (name.includes(query) || order === query || ('#' + order) === query) {
+      card.style.display = 'flex';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  const noResults = document.getElementById('noResultsNotice');
+  if (noResults) {
+    noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
+  }
+});
+
+// Devotional Modal functions
+function openDevotionalModal(name, imgSrc, order, profileUrl, lekhanaUrl) {
+  document.getElementById('modalName').textContent = name;
+  document.getElementById('modalImg').src = imgSrc;
+  document.getElementById('modalOrder').textContent = 'PEETHADHIPATI #' + (order.toString().padStart(2, '0'));
+  document.getElementById('modalProfileBtn').href = profileUrl;
+  document.getElementById('modalLekhanaBtn').href = lekhanaUrl;
+  document.getElementById('devotionalModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDevotionalModal(e) {
+  if (!e || e.target.id === 'devotionalModal' || e.target.classList.contains('modal-close-btn')) {
+    document.getElementById('devotionalModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeDevotionalModal();
+});
+</script>
+
+{% endblock %}

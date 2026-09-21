@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Lekhana Seva Completed — {{ session.guru.name }} | Uttaradi Math{% endblock %}
+{% block content %}
+
+<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 60px 20px; margin-top: 70px; background: linear-gradient(180deg, var(--color-background) 0%, #F5EDD8 100%);">
+  <div style="max-width: 580px; width: 100%; text-align: center;">
+
+    <!-- Lotus and completion -->
+    <div style="font-size: 4.5rem; margin-bottom: 24px; animation: pulseGold 2s infinite;">🪷</div>
+    <h1 class="font-serif" style="color: var(--color-primary); font-size: 2.6rem; margin-bottom: 12px;">Lekhana Seva Completed</h1>
+    <div style="width: 60px; height: 3px; background: var(--color-gold); border-radius: 2px; margin: 0 auto 32px;"></div>
+
+    <!-- Details card -->
+    <div style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 20px; padding: 36px; margin-bottom: 32px; box-shadow: 0 8px 32px rgba(44,24,16,0.08); text-align: left;">
+
+      {% if session.guru.image_url %}
+      <div style="text-align: center; margin-bottom: 24px;">
+        <img src="{{ session.guru.image_url }}" alt="{{ session.guru.name }}"
+             style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--color-gold); object-fit: cover;">
+      </div>
+      {% endif %}
+
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 12px 0; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 0.85rem; width: 45%;">Guru</td>
+          <td style="padding: 12px 0; border-bottom: 1px solid var(--color-border); font-family: var(--font-serif); color: var(--color-primary); font-size: 1rem;">{{ session.guru.name }}</td>
+        </tr>
+        <tr>
+          <td style="padding: 12px 0; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 0.85rem;">Completed Count</td>
+          <td style="padding: 12px 0; border-bottom: 1px solid var(--color-border); font-family: var(--font-serif); color: var(--color-primary); font-size: 1.5rem; font-weight: bold;">{{ session.completed_count }}</td>
+        </tr>
+        <tr>
+          <td style="padding: 12px 0; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 0.85rem;">Mode</td>
+          <td style="padding: 12px 0; border-bottom: 1px solid var(--color-border);">{{ session.mode | title }}</td>
+        </tr>
+        {% if session.user %}
+        <tr>
+          <td style="padding: 12px 0; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 0.85rem;">Bhakta</td>
+          <td style="padding: 12px 0; border-bottom: 1px solid var(--color-border);">{{ session.user.name }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td style="padding: 12px 0; color: var(--color-text-muted); font-size: 0.85rem;">Date</td>
+          <td style="padding: 12px 0;">{{ (session.completed_at or session.created_at).strftime('%d %B %Y') if (session.completed_at or session.created_at) else 'Today' }}</td>
+        </tr>
+      </table>
+
+      {% if session.guru.lekhana_text and '[PLACEHOLDER' not in session.guru.lekhana_text %}
+      <div style="margin-top: 24px; padding: 20px; background: linear-gradient(135deg, var(--color-background), #FFF3E0); border-radius: 12px; border: 1px solid var(--color-gold); text-align: center;">
+        <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 8px; letter-spacing: 1px;">GURU LEKHANA</div>
+        <div class="font-serif" style="color: var(--color-primary); font-size: 1.2rem; line-height: 1.6;">{{ session.guru.lekhana_text }}</div>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- Blessing text -->
+    <p style="color: var(--color-text-light); font-style: italic; font-size: 1rem; margin-bottom: 32px; line-height: 1.7;">
+      May the grace of the Guru Parampara bless this devotional effort.
+    </p>
+
+    <!-- Action buttons -->
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;">
+      <a href="{{ url_for('lekhana.certificate', uuid=session.session_uuid) }}"
+         class="btn btn-primary" style="padding: 12px 24px;">
+        📄 Download Acknowledgement
+      </a>
+      <a href="{{ url_for('lekhana.index') }}" class="btn btn-outline" style="padding: 12px 24px;">
+        Begin Another Seva
+      </a>
+      {% if current_user.is_authenticated %}
+      <a href="{{ url_for('seva.dashboard') }}" class="btn btn-gold" style="padding: 12px 24px;">
+        My Seva Dashboard
+      </a>
+      {% else %}
+      <a href="{{ url_for('auth.register') }}" class="btn btn-gold" style="padding: 12px 24px;">
+        Save Progress — Register
+      </a>
+      {% endif %}
+    </div>
+
+    <!-- Disclaimer -->
+    <p style="font-size: 0.75rem; color: var(--color-text-muted); line-height: 1.6; padding: 16px; background: var(--color-card); border-radius: 10px; border: 1px solid var(--color-border);">
+      <strong>Note:</strong> The "Digital Lekhana Seva Acknowledgement" is a personal devotional record generated by this platform. 
+      It is not an official certificate from Uttaradi Math Peetham or any religious authority. 
+      This is an independent devotional platform.
+    </p>
+
+  </div>
+</div>
+
+{% endblock %}

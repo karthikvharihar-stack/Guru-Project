@@ -1,0 +1,308 @@
+/* === MODE SELECTOR === */
+.mode-tabs { 
+  display: flex; 
+  gap: 8px; 
+  margin-bottom: 24px; 
+  justify-content: center;
+}
+.mode-tab { 
+  padding: 10px 24px; 
+  border-radius: 8px; 
+  border: 2px solid var(--color-border); 
+  background: var(--color-card); 
+  cursor: pointer; 
+  font-family: var(--font-body); 
+  font-size: 0.95rem; 
+  font-weight: 600;
+  color: var(--color-text);
+  transition: all 0.2s; 
+}
+.mode-tab:hover {
+  border-color: var(--color-gold);
+}
+.mode-tab.active { 
+  background: var(--color-primary); 
+  color: white; 
+  border-color: var(--color-primary); 
+}
+.mode-panel { 
+  display: none; 
+  animation: fadeIn 0.3s ease;
+}
+.mode-panel.active { 
+  display: block; 
+}
+
+/* === COUNT SELECTOR === */
+.count-selector { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 12px; 
+  justify-content: center; 
+  margin: 24px 0; 
+}
+.count-btn { 
+  width: 80px; 
+  height: 80px; 
+  border-radius: 50%; 
+  border: 2px solid var(--color-gold); 
+  background: var(--color-card); 
+  cursor: pointer; 
+  font-family: var(--font-serif); 
+  font-size: 1.3rem; 
+  font-weight: bold;
+  color: var(--color-text); 
+  transition: all 0.2s; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.count-btn:hover { 
+  background: var(--color-gold); 
+  color: white; 
+  transform: scale(1.05);
+}
+.count-btn.active { 
+  background: var(--color-primary); 
+  color: white; 
+  border-color: var(--color-primary); 
+}
+.count-btn.custom { 
+  width: auto; 
+  padding: 0 20px; 
+  border-radius: 40px; 
+  font-size: 1rem; 
+}
+
+/* === LEKHANA TEXT DISPLAY ===
+   The sacred text shown to devotee while writing
+*/
+.lekhana-text-box { 
+  background: linear-gradient(135deg, var(--color-card), #FFF3E0);
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  padding: 30px 40px;
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(201,146,42,0.1);
+}
+.lekhana-text-box::before, .lekhana-text-box::after {
+  content: '❋';
+  position: absolute;
+  color: var(--color-gold);
+  font-size: 1.5rem;
+  opacity: 0.5;
+}
+.lekhana-text-box::before { top: 10px; left: 10px; }
+.lekhana-text-box::after { bottom: 10px; right: 10px; }
+
+.lekhana-text { 
+  font-family: var(--font-serif); 
+  font-size: 1.6rem; 
+  color: var(--color-primary); 
+  line-height: 1.6; 
+  font-weight: bold;
+}
+.lekhana-sanskrit { 
+  font-family: var(--font-devanagari); 
+  font-size: 1.2rem; 
+  color: var(--color-text-light); 
+  margin-top: 12px; 
+}
+
+/* === CANVAS CONTAINER ===
+   Paper-like appearance for handwriting
+*/
+.canvas-wrapper { 
+  background: #FEFDF7;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 8px rgba(44,24,16,0.05), 0 4px 16px rgba(44,24,16,0.08);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.canvas-wrapper::before { 
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(212,197,160,0.3) 31px, rgba(212,197,160,0.3) 32px);
+  pointer-events: none;
+  z-index: 0;
+}
+#lekhana-canvas { 
+  display: block; 
+  cursor: crosshair; 
+  position: relative; 
+  z-index: 1; 
+  touch-action: none; 
+  width: 100%;
+}
+
+/* === CANVAS TOOLBAR === */
+.canvas-toolbar { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+  justify-content: space-between;
+  padding: 12px 16px; 
+  background: var(--color-card); 
+  border: 1px solid var(--color-border); 
+  border-radius: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap; 
+}
+.canvas-tools-left, .canvas-tools-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.canvas-btn { 
+  padding: 8px 16px; 
+  border: 1px solid var(--color-border); 
+  border-radius: 6px; 
+  background: white; 
+  cursor: pointer; 
+  font-size: 0.85rem; 
+  font-weight: 600;
+  color: var(--color-text);
+  transition: all 0.2s; 
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.canvas-btn:hover { 
+  border-color: var(--color-gold); 
+  background: var(--color-background);
+}
+.canvas-btn.btn-next { 
+  background: var(--color-primary); 
+  color: white; 
+  border-color: var(--color-primary); 
+  padding: 8px 24px;
+}
+.canvas-btn.btn-next:hover {
+  background: var(--color-primary-dark);
+}
+.pen-size { 
+  width: 100px; 
+  cursor: pointer;
+}
+.color-dots { 
+  display: flex; 
+  gap: 8px; 
+  padding: 0 10px;
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+}
+.color-dot { 
+  width: 24px; 
+  height: 24px; 
+  border-radius: 50%; 
+  cursor: pointer; 
+  border: 2px solid transparent; 
+  transition: transform 0.2s;
+}
+.color-dot:hover { transform: scale(1.1); }
+.color-dot.active { border-color: var(--color-gold); box-shadow: 0 0 0 2px white inset; }
+
+/* === TYPE MODE INPUT === */
+.type-input { 
+  width: 100%; 
+  min-height: 120px;
+  padding: 20px;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--color-primary);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-card);
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 8px;
+}
+.type-input:focus { 
+  outline: none; 
+  border-color: var(--color-gold); 
+  box-shadow: 0 0 0 3px rgba(201,146,42,0.1);
+}
+.type-input.valid { border-color: #4CAF50; }
+.type-input.invalid { border-color: #f44336; }
+.type-input-hint { 
+  font-size: 0.85rem; 
+  color: var(--color-text-muted); 
+  margin-top: 8px; 
+  text-align: right;
+}
+
+/* === PROGRESS COUNTER === */
+.lekhana-progress { 
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.progress-count { 
+  font-family: var(--font-serif); 
+  font-size: 2.5rem; 
+  color: var(--color-primary); 
+  font-weight: 700; 
+  line-height: 1;
+  min-width: 80px;
+  text-align: center;
+}
+.progress-label { 
+  font-size: 0.85rem; 
+  color: var(--color-text-muted); 
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+.progress-bar-container { 
+  flex: 1; 
+}
+.progress-bar { 
+  height: 12px; 
+  background: var(--color-border); 
+  border-radius: 6px; 
+  overflow: hidden; 
+}
+.progress-fill { 
+  height: 100%; 
+  background: linear-gradient(90deg, var(--color-primary), var(--color-gold)); 
+  border-radius: 6px; 
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+.progress-percent { 
+  font-size: 0.9rem; 
+  color: var(--color-gold); 
+  font-weight: 600; 
+  margin-top: 8px; 
+  text-align: right;
+}
+
+/* === MOBILE CANVAS MODE === */
+@media (max-width: 768px) {
+  #lekhana-canvas { width: 100% !important; }
+  .canvas-toolbar { 
+    flex-direction: column;
+    justify-content: center; 
+  }
+  .canvas-tools-left, .canvas-tools-right {
+    width: 100%;
+    justify-content: center;
+  }
+  .color-dots { border: none; padding: 10px 0; }
+  .canvas-btn { padding: 10px 14px; font-size: 0.9rem; flex: 1; justify-content: center; }
+  .mode-tabs { justify-content: center; }
+  .count-btn { width: 64px; height: 64px; font-size: 1.1rem; }
+  .lekhana-text { font-size: 1.3rem; }
+  .lekhana-progress { flex-direction: column; text-align: center; gap: 12px; }
+  .progress-count { font-size: 2rem; }
+}

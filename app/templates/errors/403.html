@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}403 — Forbidden | Uttaradi Math{% endblock %}
+{% block content %}
+<div style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; margin-top: 70px; text-align: center;">
+  <div>
+    <div style="font-size: 4rem; margin-bottom: 20px; opacity: 0.4;">🔒</div>
+    <h1 class="font-serif" style="color: var(--color-primary); font-size: 3rem; margin-bottom: 12px;">403</h1>
+    <h2 class="font-serif" style="color: var(--color-secondary); margin-bottom: 16px;">Access Restricted</h2>
+    <p style="color: var(--color-text-muted); max-width: 400px; margin: 0 auto 32px; line-height: 1.7;">You do not have permission to view this page.</p>
+    <a href="{{ url_for('main.index') }}" class="btn btn-primary">Return Home</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Uttaradi Math</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+  
+  <div class="guru-card" style="width: 100%; max-width: 420px; padding: 40px 32px; background: var(--color-card); box-shadow: 0 16px 48px rgba(0,0,0,0.3); border-radius: 16px;">
+    
+    <div style="text-align: center; margin-bottom: 28px;">
+      <div style="font-size: 2.5rem; margin-bottom: 8px;">🪷</div>
+      <h1 class="font-serif" style="color: var(--color-primary); font-size: 1.8rem; margin: 0 0 6px;">Uttaradi Math</h1>
+      <p style="color: var(--color-gold); font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; margin: 0;">Administration Portal</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        <div style="margin-bottom: 20px;">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}" style="position: relative; top: 0; right: 0; box-shadow: none; border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem;">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('admin.login') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label class="form-label" for="email">Admin Email</label>
+        <input type="email" id="email" name="email" class="form-control" required placeholder="admin@uttaradi-math.local">
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 24px;">
+        <label class="form-label" for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-control" required placeholder="••••••••">
+      </div>
+      
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
+        Sign In to Admin
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 24px; border-top: 1px solid var(--color-border); padding-top: 16px;">
+      <a href="{{ url_for('main.index') }}" style="color: var(--color-text-muted); font-size: 0.85rem; text-decoration: none;">
+        ← Back to Devotional Site
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>

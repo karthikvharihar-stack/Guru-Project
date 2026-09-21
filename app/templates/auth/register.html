@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="display: flex; align-items: center; justify-content: center; min-height: 80vh; padding: 40px 15px;">
+  
+  <div class="guru-card" style="width: 100%; max-width: 500px;">
+    <div class="text-center" style="margin-bottom: 20px;">
+      <h2 class="font-serif">Register</h2>
+      <p style="color: var(--color-text-muted); font-size: 0.9rem;">Create your digital identity for Lekhana Seva</p>
+    </div>
+    
+    <form method="POST" action="/auth/register">
+      {{ form.csrf_token if form else '' }}
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" name="confirm_password" class="form-control" required>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Preferred Language</label>
+        <select name="language" class="form-control">
+          <option value="english">English</option>
+          <option value="kannada">Kannada</option>
+          <option value="sanskrit">Sanskrit / Devanagari</option>
+        </select>
+      </div>
+      
+      <div class="form-group" style="font-size: 0.9rem;">
+        <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+          <input type="checkbox" name="terms" required style="margin-top: 4px;"> 
+          <span>I agree to the <a href="/terms">Terms of Use</a> and understand this is an independent devotional platform.</span>
+        </label>
+      </div>
+      
+      <button type="submit" class="btn btn-gold" style="width: 100%; margin-bottom: 15px;">Register</button>
+      
+      <div class="text-center" style="font-size: 0.9rem;">
+        Already have an account? <a href="/auth/login" style="font-weight: bold; color: var(--color-primary);">Login here</a>
+      </div>
+    </form>
+  </div>
+  
+</div>
+{% endblock %}

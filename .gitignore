@@ -1,0 +1,30 @@
+# Virtual environment
+venv/
+.env
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask session and temporary data
+flask_session/
+instance/
+
+# Local databases
+*.sqlite
+*.sqlite3
+
+# Uploads and temporary assets
+uploads/books/*
+uploads/media/*
+uploads/ai_docs/*
+ai/chroma_db/*
+!uploads/.gitkeep
+!uploads/gurus/.gitkeep
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

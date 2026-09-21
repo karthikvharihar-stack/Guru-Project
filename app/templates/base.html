@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Uttaradi Math — Guru Lekhana Seva{% endblock %}</title>
+  <meta name="description" content="{% block description %}A digital platform for Guru Parampara Smarana and Lekhana Seva of Uttaradi Math tradition.{% endblock %}">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Kannada:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  
+  <nav class="navbar" id="main-navbar">
+    <div class="container">
+      {% if request.path != '/' and request.endpoint != 'main.index' %}
+      <a href="{{ url_for('main.index') }}" class="navbar-brand">
+        <span class="navbar-logo-icon">🪷</span>
+        <span class="navbar-logo-text">Uttaradi Math</span>
+      </a>
+      {% endif %}
+      
+      <ul class="navbar-nav">
+        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+        <li><a href="{{ url_for('guru.parampara') }}">Guru Parampara</a></li>
+        <li><a href="{{ url_for('lekhana.index') }}">Lekhana Seva</a></li>
+        <li><a href="{{ url_for('granthalaya.index') }}">Granthalaya</a></li>
+        <li><a href="{{ url_for('pravachana.index') }}">Pravachana</a></li>
+        <li><a href="{{ url_for('calendar_bp.index') }}">Calendar</a></li>
+        <li><a href="{{ url_for('jijnasa.index') }}">Guru Jijnasa</a></li>
+      </ul>
+      
+      <div class="navbar-auth">
+        {% if current_user and current_user.is_authenticated %}
+          <a href="{{ url_for('seva.dashboard') }}" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.9rem;">My Seva</a>
+          <a href="{{ url_for('auth.logout') }}" class="btn btn-primary" style="padding: 7px 16px; font-size: 0.9rem;">Logout</a>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.9rem;">Login</a>
+          <a href="{{ url_for('auth.register') }}" class="btn btn-gold" style="padding: 7px 16px; font-size: 0.9rem;">Register</a>
+        {% endif %}
+      </div>
+      
+      <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  
+  <div class="mobile-nav" id="mobile-menu">
+    <a href="{{ url_for('main.index') }}">Home</a>
+    <a href="{{ url_for('guru.parampara') }}">Guru Parampara</a>
+    <a href="{{ url_for('lekhana.index') }}">Lekhana Seva</a>
+    <a href="{{ url_for('granthalaya.index') }}">Granthalaya</a>
+    <a href="{{ url_for('pravachana.index') }}">Pravachana</a>
+    <a href="{{ url_for('calendar_bp.index') }}">Calendar</a>
+    <a href="{{ url_for('jijnasa.index') }}">Guru Jijnasa</a>
+    {% if current_user and current_user.is_authenticated %}
+      <a href="{{ url_for('seva.dashboard') }}">My Seva</a>
+      <a href="{{ url_for('auth.logout') }}">Logout</a>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}">Login</a>
+      <a href="{{ url_for('auth.register') }}">Register</a>
+    {% endif %}
+  </div>
+  
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}<button class="flash-close">&times;</button></div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  
+  <main style="margin-top: 70px;">
+    {% block content %}{% endblock %}
+  </main>
+  
+  <footer class="footer" style="background: var(--color-dark-bg); color: var(--color-background); padding: 60px 0 24px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px;">
+        <div class="footer-brand">
+          <h3 style="color: var(--color-gold); font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 8px;">Uttaradi Math</h3>
+          <p class="tagline" style="color: rgba(253,246,227,0.8); font-size: 0.9rem; margin-bottom: 16px;">Guru Smarana • Guru Lekhana • Guru Parampara</p>
+          <p class="disclaimer" style="font-size: 0.8rem; color: rgba(253,246,227,0.6); line-height: 1.6;">This is an independent devotional digital platform. Not officially affiliated with Uttaradi Math Peetham.</p>
+        </div>
+        <div class="footer-links">
+          <h4 style="color: var(--color-gold); font-family: var(--font-serif); margin-bottom: 12px;">Explore</h4>
+          <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="{{ url_for('guru.parampara') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Guru Parampara</a></li>
+            <li><a href="{{ url_for('lekhana.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Lekhana Seva</a></li>
+            <li><a href="{{ url_for('granthalaya.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Granthalaya Library</a></li>
+            <li><a href="{{ url_for('pravachana.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Pravachana Discourses</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4 style="color: var(--color-gold); font-family: var(--font-serif); margin-bottom: 12px;">Devotion & Learning</h4>
+          <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="{{ url_for('calendar_bp.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Spiritual Calendar</a></li>
+            <li><a href="{{ url_for('jijnasa.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Guru Jijnasa (AI)</a></li>
+            <li><a href="{{ url_for('seva.dashboard') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">My Seva Progress</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4 style="color: var(--color-gold); font-family: var(--font-serif); margin-bottom: 12px;">Platform</h4>
+          <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li><a href="{{ url_for('main.about') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">About</a></li>
+            <li><a href="{{ url_for('main.contact') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Contact</a></li>
+            <li><a href="{{ url_for('main.privacy') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Privacy Policy</a></li>
+            <li><a href="{{ url_for('main.terms') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.85rem; color: rgba(253,246,227,0.5);">
+        <p>&copy; {{ current_year or 2026 }} Uttaradi Math — Guru Lekhana Seva. Made with devotion for Sri Hari-Vayu-Guru Smarana.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

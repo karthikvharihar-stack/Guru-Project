@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Search{% if query %} — {{ query }}{% endif %} | Uttaradi Math{% endblock %}
+{% block content %}
+<div style="margin-top: 70px; padding: 40px 20px 80px;">
+  <div class="container" style="max-width: 860px;">
+
+    <!-- Search bar -->
+    <div style="margin-bottom: 40px;">
+      <h1 class="font-serif" style="color: var(--color-primary); font-size: 2rem; margin-bottom: 20px;">Search</h1>
+      <div style="display: flex; gap: 12px;">
+        <input id="search-input" type="text" value="{{ query or '' }}"
+          placeholder="Search Gurus, books, articles, media…"
+          style="flex: 1; padding: 14px 20px; border: 2px solid var(--color-border); border-radius: 12px; font-size: 1rem; font-family: var(--font-body); background: var(--color-card); transition: border-color 0.2s; outline: none;"
+          onfocus="this.style.borderColor='var(--color-gold)'" onblur="this.style.borderColor='var(--color-border)'"
+          onkeydown="if(event.key==='Enter') doSearch()">
+        <button onclick="doSearch()" class="btn btn-primary" style="padding: 14px 24px; font-size: 1rem;">Search</button>
+      </div>
+    </div>
+
+    {% if query and results %}
+    <p style="color: var(--color-text-muted); margin-bottom: 32px; font-size: 0.9rem;">
+      Found <strong>{{ results.total }}</strong> result(s) for "<strong>{{ query }}</strong>"
+    </p>
+
+    <!-- Gurus -->
+    {% if results.gurus %}
+    <div style="margin-bottom: 36px;">
+      <h2 class="font-serif" style="color: var(--color-primary); font-size: 1.4rem; margin-bottom: 16px;">Gurus</h2>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        {% for guru in results.gurus %}
+        <a href="{{ url_for('guru.profile', slug=guru.slug) }}" style="text-decoration: none;">
+          <div style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 20px; display: flex; gap: 16px; align-items: center; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='var(--color-border)'">
+            <img src="{{ guru.image_url or url_for('static', filename='images/placeholder-guru.svg') }}" alt="{{ guru.name }}" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-gold); flex-shrink: 0;">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--color-gold); margin-bottom: 2px;">Guru #{{ guru.guru_order }}</div>
+              <h3 class="font-serif" style="color: var(--color-primary); font-size: 1.1rem; margin-bottom: 4px;">{{ guru.name }}</h3>
+              {% if guru.short_description %}<p style="color: var(--color-text-muted); font-size: 0.85rem; margin: 0;">{{ guru.short_description[:120] }}{% if guru.short_description|length > 120 %}…{% endif %}</p>{% endif %}
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Books -->
+    {% if results.books %}
+    <div style="margin-bottom: 36px;">
+      <h2 class="font-serif" style="color: var(--color-primary); font-size: 1.4rem; margin-bottom: 16px;">Books</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        {% for book in results.books %}
+        <div style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 20px; display: flex; gap: 14px; align-items: center;">
+          <div style="font-size: 1.8rem; flex-shrink: 0;">📖</div>
+          <div>
+            <h4 class="font-serif" style="color: var(--color-text); margin-bottom: 4px;">{{ book.title }}</h4>
+            {% if book.author %}<p style="color: var(--color-text-muted); font-size: 0.85rem; margin: 0;">{{ book.author }}</p>{% endif %}
+          </div>
+          {% if book.file_url %}<a href="{{ book.file_url }}" target="_blank" class="btn btn-outline" style="margin-left: auto; padding: 6px 14px; font-size: 0.85rem; flex-shrink: 0;">View</a>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Media -->
+    {% if results.media %}
+    <div style="margin-bottom: 36px;">
+      <h2 class="font-serif" style="color: var(--color-primary); font-size: 1.4rem; margin-bottom: 16px;">Pravachana</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        {% for item in results.media %}
+        <div style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 20px; display: flex; gap: 14px; align-items: center;">
+          <div style="font-size: 1.8rem; flex-shrink: 0;">{{ '🎥' if item.media_type == 'video' else '🎵' }}</div>
+          <div>
+            <h4 class="font-serif" style="color: var(--color-text); margin-bottom: 4px;">{{ item.title }}</h4>
+            {% if item.speaker %}<p style="color: var(--color-text-muted); font-size: 0.85rem; margin: 0;">{{ item.speaker }}</p>{% endif %}
+          </div>
+          <a href="{{ url_for('pravachana.detail', media_id=item.id) }}" class="btn btn-outline" style="margin-left: auto; padding: 6px 14px; font-size: 0.85rem; flex-shrink: 0;">View</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% elif query %}
+    <!-- No results -->
+    <div style="text-align: center; padding: 60px 20px;">
+      <div style="font-size: 3rem; margin-bottom: 16px; opacity: 0.4;">🔍</div>
+      <h2 class="font-serif" style="color: var(--color-primary); margin-bottom: 12px;">No Results Found</h2>
+      <p style="color: var(--color-text-muted); margin-bottom: 28px;">No results for "<strong>{{ query }}</strong>". Try different keywords.</p>
+      <a href="{{ url_for('guru.parampara') }}" class="btn btn-primary">Browse Guru Parampara</a>
+    </div>
+    {% else %}
+    <!-- Empty state -->
+    <div style="text-align: center; padding: 60px 20px; color: var(--color-text-muted);">
+      <div style="font-size: 3rem; margin-bottom: 16px; opacity: 0.3;">🔍</div>
+      <p>Enter a search term to find Gurus, books, articles, and more.</p>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (q) window.location.href = '/search?q=' + encodeURIComponent(q);
+}
+</script>
+{% endblock %}

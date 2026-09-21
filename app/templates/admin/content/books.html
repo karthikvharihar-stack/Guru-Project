@@ -1,0 +1,64 @@
+{% extends 'admin/base.html' %}
+{% block admin_title %}Manage Books{% endblock %}
+{% block page_title %}Granthalaya Books{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+  <p style="color: var(--color-text-muted); margin: 0;">Manage digital library books, commentaries, and resources.</p>
+  <a href="{{ url_for('admin.book_add') }}" class="btn btn-primary" style="padding: 10px 20px;">
+    + Add New Book
+  </a>
+</div>
+
+<div class="admin-card">
+  {% if books %}
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Category</th>
+          <th>Language</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+          <tr>
+            <td>{{ book.id }}</td>
+            <td><strong>{{ book.title }}</strong></td>
+            <td>{{ book.author or '—' }}</td>
+            <td>{{ book.category or '—' }}</td>
+            <td>{{ book.language or '—' }}</td>
+            <td>
+              <span class="badge {% if book.is_active %}badge-success{% else %}badge-secondary{% endif %}">
+                {{ 'Active' if book.is_active else 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 8px;">
+                <a href="{{ url_for('admin.book_edit', book_id=book.id) }}" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.85rem;">
+                  Edit
+                </a>
+                <form method="POST" action="{{ url_for('admin.book_delete', book_id=book.id) }}" onsubmit="return confirm('Delete this book?');" style="display: inline;">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.85rem; color: #d32f2f; border-color: rgba(211,47,47,0.3);">
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div style="text-align: center; padding: 48px; color: var(--color-text-muted);">
+      <p>No books registered yet.</p>
+      <a href="{{ url_for('admin.book_add') }}" class="btn btn-primary" style="margin-top: 12px;">Add First Book</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

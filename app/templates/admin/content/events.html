@@ -1,0 +1,65 @@
+{% extends 'admin/base.html' %}
+{% block admin_title %}Manage Calendar Events{% endblock %}
+{% block page_title %}Calendar Events & Aradhanas{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+  <p style="color: var(--color-text-muted); margin: 0;">Manage Guru Aradhanas, festivals, and sacred dates.</p>
+  <a href="{{ url_for('admin.event_add') }}" class="btn btn-primary" style="padding: 10px 20px;">
+    + Add New Event
+  </a>
+</div>
+
+<div class="admin-card">
+  {% if events %}
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Tithi</th>
+          <th>Associated Guru</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+          <tr>
+            <td>{{ event.id }}</td>
+            <td><strong>{{ event.event_date.strftime('%d %b %Y') if event.event_date else '—' }}</strong></td>
+            <td>{{ event.title }}</td>
+            <td>
+              <span class="badge {% if event.event_type == 'aradhana' %}badge-warning{% elif event.event_type == 'festival' %}badge-info{% else %}badge-secondary{% endif %}">
+                {{ event.event_type | title }}
+              </span>
+            </td>
+            <td>{{ event.tithi or '—' }}</td>
+            <td>{{ event.guru.name if event.guru else '—' }}</td>
+            <td>
+              <span class="badge {% if event.is_active %}badge-success{% else %}badge-secondary{% endif %}">
+                {{ 'Active' if event.is_active else 'Inactive' }}
+              </span>
+            </td>
+            <td>
+              <form method="POST" action="{{ url_for('admin.event_delete', event_id=event.id) }}" onsubmit="return confirm('Delete this event?');" style="display: inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.85rem; color: #d32f2f; border-color: rgba(211,47,47,0.3);">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div style="text-align: center; padding: 48px; color: var(--color-text-muted);">
+      <p>No calendar events registered yet.</p>
+      <a href="{{ url_for('admin.event_add') }}" class="btn btn-primary" style="margin-top: 12px;">Add First Event</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

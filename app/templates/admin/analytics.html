@@ -1,0 +1,73 @@
+{% extends 'admin/base.html' %}
+{% block admin_title %}Platform Analytics{% endblock %}
+{% block page_title %}Analytics & Seva Metrics{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 24px;">
+  <p style="color: var(--color-text-muted); margin: 0;">Overview of devotee engagement, Lekhana counts, and platform growth.</p>
+</div>
+
+<!-- Key Stat Cards -->
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-bottom: 36px;">
+  <div class="admin-card" style="text-align: center; padding: 24px;">
+    <div style="font-size: 0.8rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Total Users</div>
+    <div style="font-size: 2.2rem; font-weight: 700; color: var(--color-primary); font-family: var(--font-serif);">{{ stats.total_users }}</div>
+    <div style="font-size: 0.8rem; color: var(--color-gold); margin-top: 4px;">{{ stats.active_users }} active</div>
+  </div>
+
+  <div class="admin-card" style="text-align: center; padding: 24px;">
+    <div style="font-size: 0.8rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Total Gurus</div>
+    <div style="font-size: 2.2rem; font-weight: 700; color: var(--color-primary); font-family: var(--font-serif);">{{ stats.total_gurus }}</div>
+    <div style="font-size: 0.8rem; color: #388e3c; margin-top: 4px;">{{ stats.verified_gurus }} verified</div>
+  </div>
+
+  <div class="admin-card" style="text-align: center; padding: 24px;">
+    <div style="font-size: 0.8rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Lekhana Sessions</div>
+    <div style="font-size: 2.2rem; font-weight: 700; color: var(--color-primary); font-family: var(--font-serif);">{{ stats.total_sessions }}</div>
+    <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 4px;">all time</div>
+  </div>
+
+  <div class="admin-card" style="text-align: center; padding: 24px;">
+    <div style="font-size: 0.8rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Completed Sevas</div>
+    <div style="font-size: 2.2rem; font-weight: 700; color: #2e7d32; font-family: var(--font-serif);">{{ stats.completed_sessions }}</div>
+    <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 4px;">{{ stats.in_progress_sessions }} in progress</div>
+  </div>
+</div>
+
+<!-- Top Gurus by Seva Activity -->
+<div class="admin-card" style="padding: 28px;">
+  <h3 class="font-serif" style="color: var(--color-primary); margin-top: 0; margin-bottom: 20px;">Top Gurus by Seva Sessions</h3>
+  {% if top_gurus %}
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Guru Name</th>
+          <th>Total Sessions Started</th>
+          <th>Activity Share</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for guru_name, count in top_gurus %}
+          {% set pct = ((count / stats.total_sessions) * 100) | round(1) if stats.total_sessions > 0 else 0 %}
+          <tr>
+            <td><strong>{{ guru_name }}</strong></td>
+            <td>{{ count }}</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="flex: 1; max-width: 200px; height: 8px; background: var(--color-border); border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: {{ pct }}%; background: var(--color-gold);"></div>
+                </div>
+                <span style="font-size: 0.85rem; color: var(--color-text-muted);">{{ pct }}%</span>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div style="text-align: center; padding: 36px; color: var(--color-text-muted);">
+      <p>No Seva session activity recorded yet.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
