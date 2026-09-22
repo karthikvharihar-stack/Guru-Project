@@ -342,7 +342,7 @@ window.toggleSpeech = function (btn, text) {
 };
 
 window.speakWelcomeMessage = function (btn) {
-  const text = "Namaskara! I am Guru Jijnasa, your voice and AI guide for the sacred tradition of Sri Uttaradi Math. Ask me about the 42 Gurus, Dvaita Vedanta, or Lekhana Seva.";
+  const text = "Namaskara! I am Guru Jijnasa, your voice and AI guide for the sacred Guru Parampara. Ask me about the 42 Gurus, Dvaita Vedanta, or Lekhana Seva.";
   const bubble = btn.closest('.chat-bubble');
   speakText(btn, text, bubble);
 };
