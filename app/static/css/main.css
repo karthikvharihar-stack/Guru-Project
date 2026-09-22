@@ -151,7 +151,6 @@ h4 { font-size: 1.5rem; }
   position: relative;
 }
 
-/* Left Brand Anchor */
 .navbar-brand {
   font-family: var(--font-serif);
   font-size: 1.35rem;
@@ -164,6 +163,11 @@ h4 { font-size: 1.5rem; }
   flex: 0 0 auto;
   min-width: 200px;
   transition: transform 0.25s ease;
+}
+
+.navbar-spacer {
+  flex: 0 0 auto;
+  min-width: 200px;
 }
 
 .navbar-brand:hover {
