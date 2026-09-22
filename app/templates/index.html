@@ -392,39 +392,7 @@
 
 
 
-<!-- ════════════════════════════════ UPCOMING EVENTS ═════════════════════════════════ -->
-{% if upcoming_events %}
-<section style="padding: 70px 20px; background: var(--color-background);">
-  <div class="container">
-    <div class="section-hdr">
-      <h2>Upcoming Events</h2>
-      <p>Guru Aradhanas, festivals and important dates</p>
-      <div class="gold-line"></div>
-    </div>
-    <div style="max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
-      {% for event in upcoming_events %}
-      <div style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px 24px; display: flex; gap: 20px; align-items: center;">
-        <div style="text-align: center; min-width: 60px; padding: 8px; background: var(--color-primary); border-radius: 10px; color: white;">
-          <div style="font-size: 1.4rem; font-weight: bold; font-family: var(--font-serif);">{{ event.event_date.day }}</div>
-          <div style="font-size: 0.7rem; letter-spacing: 1px;">{{ event.event_date.strftime('%b %Y') }}</div>
-        </div>
-        <div style="flex: 1;">
-          <h4 style="color: var(--color-primary); margin-bottom: 4px;">{{ event.title }}</h4>
-          {% if event.tithi %}<p style="font-size: 0.85rem; color: var(--color-text-muted);">{{ event.tithi }}</p>{% endif %}
-          {% if event.description %}<p style="font-size: 0.85rem; color: var(--color-text-light);">{{ event.description[:100] }}{% if event.description|length > 100 %}…{% endif %}</p>{% endif %}
-        </div>
-        <span style="font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; background: {% if event.event_type == 'aradhana' %}rgba(139,26,26,0.1){% elif event.event_type == 'festival' %}rgba(201,146,42,0.1){% else %}rgba(74,44,23,0.1){% endif %}; color: {% if event.event_type == 'aradhana' %}var(--color-primary){% elif event.event_type == 'festival' %}var(--color-gold){% else %}var(--color-secondary){% endif %};">
-          {{ event.event_type | title }}
-        </span>
-      </div>
-      {% endfor %}
-    </div>
-    <div style="text-align: center; margin-top: 32px;">
-      <a href="{{ url_for('calendar_bp.index') }}" class="btn btn-outline">View Full Calendar</a>
-    </div>
-  </div>
-</section>
-{% endif %}
+
 
 <!-- ════════════════════════════════ DIGITAL DEEPA ═══════════════════════════════════ -->
 <section style="padding: 80px 20px; background: var(--color-dark-bg); text-align: center;">

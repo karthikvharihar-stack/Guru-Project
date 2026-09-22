@@ -102,23 +102,7 @@ def run_tests():
         else:
             report("Guru Profile Flow", False, "No gurus found")
 
-        # 11. Pravachana & Detail
-        res = client.get('/pravachana/')
-        report("Pravachana Index", res.status_code == 200 and "Pravachana".encode('utf-8') in res.data)
-        
-        media = Media.query.first()
-        if media:
-            res = client.get(f'/pravachana/{media.id}')
-            report("Pravachana Media Detail", res.status_code == 200 and media.title.encode('utf-8') in res.data)
-
-        # 13. Calendar & API
-        res = client.get('/calendar/')
-        report("Spiritual Calendar Index", res.status_code == 200 and "Calendar".encode('utf-8') in res.data)
-        
-        res = client.get('/calendar/events?month=1&year=2026')
-        report("Calendar Events JSON API", res.status_code == 200 and isinstance(res.json, list))
-
-        # 14. Global Search & Autocomplete
+        # 11. Global Search & Autocomplete
         res = client.get('/search/?q=madhva')
         report("Search Results Page", res.status_code == 200)
         
@@ -180,10 +164,10 @@ def run_tests():
         report("Admin Books List", res.status_code == 200 and b"Books" in res.data)
 
         res = client.get('/admin/content/media')
-        report("Admin Media List", res.status_code == 200 and b"Pravachana Media" in res.data)
+        report("Admin Media List", res.status_code == 200 and b"Media" in res.data)
 
         res = client.get('/admin/content/events')
-        report("Admin Events List", res.status_code == 200 and b"Calendar Events" in res.data)
+        report("Admin Events List", res.status_code == 200 and b"Events" in res.data)
 
         res = client.get('/admin/users')
         report("Admin Users List", res.status_code == 200 and b"Devotee Users" in res.data)

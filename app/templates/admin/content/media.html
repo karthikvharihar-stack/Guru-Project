@@ -41,11 +41,7 @@
                 {{ 'Active' if item.is_active else 'Inactive' }}
               </span>
             </td>
-            <td>
-              <a href="{{ url_for('pravachana.detail', media_id=item.id) }}" target="_blank" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.85rem;">
-                View
-              </a>
-            </td>
+            <td>—</td>
           </tr>
         {% endfor %}
       </tbody>

@@ -44,18 +44,6 @@
           </a>
         </li>
         <li>
-          <a href="{{ url_for('pravachana.index') }}" class="nav-pill {% if 'pravachana' in request.path %}active{% endif %}">
-            <span class="nav-pill-icon">🎙️</span>
-            <span class="nav-pill-text">Pravachana</span>
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('calendar_bp.index') }}" class="nav-pill {% if 'calendar' in request.path %}active{% endif %}">
-            <span class="nav-pill-icon">🌕</span>
-            <span class="nav-pill-text">Calendar</span>
-          </a>
-        </li>
-        <li>
           <a href="{{ url_for('jijnasa.index') }}" class="nav-pill {% if 'jijnasa' in request.path %}active{% endif %}">
             <span class="nav-pill-icon">🪔</span>
             <span class="nav-pill-text">Guru Jijnasa</span>
@@ -88,12 +76,6 @@
     </a>
     <a href="{{ url_for('lekhana.index') }}" class="{% if 'lekhana' in request.path %}active{% endif %}">
       <span class="nav-pill-icon">✍️</span> Lekhana Seva
-    </a>
-    <a href="{{ url_for('pravachana.index') }}" class="{% if 'pravachana' in request.path %}active{% endif %}">
-      <span class="nav-pill-icon">🎙️</span> Pravachana
-    </a>
-    <a href="{{ url_for('calendar_bp.index') }}" class="{% if 'calendar' in request.path %}active{% endif %}">
-      <span class="nav-pill-icon">🌕</span> Calendar
     </a>
     <a href="{{ url_for('jijnasa.index') }}" class="{% if 'jijnasa' in request.path %}active{% endif %}">
       <span class="nav-pill-icon">🪔</span> Guru Jijnasa
@@ -136,13 +118,11 @@
           <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
             <li><a href="{{ url_for('guru.parampara') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Guru Parampara</a></li>
             <li><a href="{{ url_for('lekhana.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Lekhana Seva</a></li>
-            <li><a href="{{ url_for('pravachana.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Pravachana Discourses</a></li>
           </ul>
         </div>
         <div class="footer-links">
           <h4 style="color: var(--color-gold); font-family: var(--font-serif); margin-bottom: 12px;">Devotion & Learning</h4>
           <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
-            <li><a href="{{ url_for('calendar_bp.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Spiritual Calendar</a></li>
             <li><a href="{{ url_for('jijnasa.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Guru Jijnasa (AI)</a></li>
             <li><a href="{{ url_for('seva.dashboard') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">My Seva Progress</a></li>
           </ul>
