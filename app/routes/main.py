@@ -115,14 +115,10 @@ def _load_deepa_data():
                 return json.load(f)
         except Exception:
             pass
-    # Default initial state with a sacred baseline count
+    # Default initial state: 0 deepas lit
     return {
-        'count': 108,
-        'diyas': [
-            {'name': 'Sri Devotee', 'prayer': 'Guru Smarana & Lokakshema', 'time': 'Just now'},
-            {'name': 'Bhakta', 'prayer': 'Sri Moola Rama Kripa', 'time': 'Today'},
-            {'name': 'Hari Bhakta', 'prayer': 'Vidya & Jnana Prapti', 'time': 'Today'}
-        ]
+        'count': 0,
+        'diyas': []
     }
 
 

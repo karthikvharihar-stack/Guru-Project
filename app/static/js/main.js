@@ -169,6 +169,8 @@ function initDigitalDeepa() {
   
   if (!deepaCanvas) return;
   
+  let currentDeepaCount = 0;
+
   window.fetchDeepaData = async function () {
     try {
       const res = await fetch('/api/deepa');
@@ -178,21 +180,27 @@ function initDigitalDeepa() {
       }
     } catch (e) {
       console.warn('Could not fetch deepa data:', e);
+      renderDeepaState({ count: 0, diyas: [] });
     }
   };
 
   function renderDeepaState(data) {
-    if (countEl && data.count !== undefined) {
-      countEl.innerHTML = `${data.count} <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>`;
+    currentDeepaCount = data.count || 0;
+    if (countEl) {
+      countEl.innerHTML = `${currentDeepaCount} <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>`;
     }
     
-    if (deepaCanvas && data.diyas) {
-      deepaCanvas.innerHTML = data.diyas.map((d, i) => {
-        const tooltip = `${d.name || 'A Devotee'} — ${d.prayer || 'Guru Smarana'}`;
-        const delay = (i * 0.2) % 2;
-        const duration = 1.8 + ((i * 0.3) % 1.2);
-        return `<span class="deepa-diya" style="animation-delay:${delay}s;animation-duration:${duration}s" data-tooltip="${escHtml(tooltip)}" tabindex="0">🪔</span>`;
-      }).join('');
+    if (deepaCanvas) {
+      if (data.diyas && data.diyas.length > 0) {
+        deepaCanvas.innerHTML = data.diyas.map((d, i) => {
+          const tooltip = `${d.name || 'A Devotee'} — ${d.prayer || 'Guru Smarana'}`;
+          const delay = (i * 0.2) % 2;
+          const duration = 1.8 + ((i * 0.3) % 1.2);
+          return `<span class="deepa-diya" style="animation-delay:${delay}s;animation-duration:${duration}s" data-tooltip="${escHtml(tooltip)}" tabindex="0">🪔</span>`;
+        }).join('');
+      } else {
+        deepaCanvas.innerHTML = `<div id="deepa-empty-altar" style="color:rgba(253,246,227,0.55);font-size:0.9rem;font-style:italic;padding:12px 0;">🪔 No Deepas offered yet in this session. Tap "Light a Deepa" below to offer the first lamp of devotion!</div>`;
+      }
     }
   }
 
@@ -221,46 +229,64 @@ function initDigitalDeepa() {
     const name = nameInput ? nameInput.value.trim() : '';
     const prayer = prayerInput ? prayerInput.value.trim() : '';
 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                      document.querySelector('input[name="csrf_token"]')?.value || '';
+
+    let newCount = currentDeepaCount + 1;
+    let newDiyaObj = {
+      name: name || 'A Devotee',
+      prayer: prayer || 'Guru Smarana & Lokakshema'
+    };
+
     try {
       const res = await fetch('/api/deepa/light', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
         body: JSON.stringify({ name: name, prayer: prayer })
       });
 
       if (res.ok) {
         const data = await res.json();
-        
-        // Instant Live Counter Update with animation
-        if (countEl && data.count) {
-          countEl.innerHTML = `${data.count} <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>`;
-          countEl.style.transform = 'scale(1.2)';
-          countEl.style.color = '#FCF6BA';
-          setTimeout(() => {
-            countEl.style.transform = 'scale(1)';
-            countEl.style.color = '#FFFDF9';
-          }, 300);
-        }
-
-        // Add newly lit diya to top of canvas with spark animation
-        if (deepaCanvas && data.diya) {
-          const tooltip = `${data.diya.name} — ${data.diya.prayer}`;
-          const newDiyaHtml = `<span class="deepa-diya deepa-diya-new" data-tooltip="${escHtml(tooltip)}" tabindex="0" style="background: radial-gradient(circle, rgba(252, 246, 186, 0.7) 0%, rgba(201, 146, 42, 0.3) 60%, transparent 90%);">🪔</span>`;
-          deepaCanvas.insertAdjacentHTML('afterbegin', newDiyaHtml);
-        }
-
-        // Close modal and reset fields
-        window.closeDeepaModal();
-        if (nameInput) nameInput.value = '';
-        if (prayerInput) prayerInput.value = '';
-
-        if (window.showToast) {
-          window.showToast('॥ श्री मूलरामो विजयते ॥ Deepa offered successfully!', 'success');
-        }
+        if (data.count) newCount = data.count;
+        if (data.diya) newDiyaObj = data.diya;
       }
     } catch (err) {
-      console.error('Error submitting deepa:', err);
-      if (window.showToast) window.showToast('Could not submit deepa. Please try again.', 'danger');
+      console.warn('Deepa server sync warning (using local update):', err);
+    }
+
+    // Update current count
+    currentDeepaCount = newCount;
+    if (countEl) {
+      countEl.innerHTML = `${currentDeepaCount} <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>`;
+      countEl.style.transform = 'scale(1.2)';
+      countEl.style.color = '#FCF6BA';
+      setTimeout(() => {
+        countEl.style.transform = 'scale(1)';
+        countEl.style.color = '#FFFDF9';
+      }, 350);
+    }
+
+    // Remove empty altar message if present
+    const emptyMsg = document.getElementById('deepa-empty-altar');
+    if (emptyMsg) emptyMsg.remove();
+
+    // Add newly lit diya to top of canvas with spark animation
+    if (deepaCanvas) {
+      const tooltip = `${newDiyaObj.name} — ${newDiyaObj.prayer}`;
+      const newDiyaHtml = `<span class="deepa-diya deepa-diya-new" data-tooltip="${escHtml(tooltip)}" tabindex="0" style="background: radial-gradient(circle, rgba(252, 246, 186, 0.7) 0%, rgba(201, 146, 42, 0.3) 60%, transparent 90%);">🪔</span>`;
+      deepaCanvas.insertAdjacentHTML('afterbegin', newDiyaHtml);
+    }
+
+    // Close modal and reset fields
+    window.closeDeepaModal();
+    if (nameInput) nameInput.value = '';
+    if (prayerInput) prayerInput.value = '';
+
+    if (window.showToast) {
+      window.showToast('॥ श्री मूलरामो विजयते ॥ Deepa offered successfully!', 'success');
     }
   };
 

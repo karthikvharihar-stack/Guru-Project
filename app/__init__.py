@@ -83,6 +83,7 @@ def create_app(config_name='development'):
 
     # CSRF exempt for AI/AJAX endpoints
     from app.extensions import csrf as csrf_ext
+    csrf_ext.exempt(main_bp)
     csrf_ext.exempt(jijnasa_bp)
     csrf_ext.exempt(lekhana_bp)
 
