@@ -17,12 +17,10 @@
   
   <nav class="navbar" id="main-navbar">
     <div class="container">
-      {% if request.path != '/' and request.endpoint != 'main.index' %}
       <a href="{{ url_for('main.index') }}" class="navbar-brand">
         <span class="navbar-logo-icon">🪷</span>
         <span class="navbar-logo-text">Uttaradi Math</span>
       </a>
-      {% endif %}
       
       <ul class="navbar-nav">
         <li>
