@@ -211,6 +211,13 @@ function initDigitalDeepa() {
       document.body.style.overflow = 'hidden';
       setTimeout(() => document.getElementById('deepa-devotee-name')?.focus(), 100);
     }
+    // Pre-prime audio player on user click to unlock browser media policies
+    try {
+      const player = document.getElementById('deepaAudioPlayer');
+      if (player) {
+        player.load();
+      }
+    } catch (e) {}
   };
 
   window.closeDeepaModal = function (e) {
@@ -303,21 +310,15 @@ function initDigitalDeepa() {
     }
   };
 
-  // Pre-load dedicated devotional audio for instant playback
-  let deepaAudio = null;
-  try {
-    deepaAudio = new Audio('/static/audio/jai_shree_ram.mp3');
-    deepaAudio.preload = 'auto';
-  } catch (e) {
-    console.warn('Deepa audio init error:', e);
-  }
-
   function playDevotionalDeepaVoice() {
     // 1. Play Resonant Temple Bell Chime (Web Audio API)
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
         const ctx = new AudioCtx();
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
         const now = ctx.currentTime;
         
         // Harmonic frequencies for authentic Indian temple bell (Ghanta)
@@ -329,7 +330,7 @@ function initDigitalDeepa() {
           osc.type = idx === 0 ? 'sine' : 'triangle';
           osc.frequency.setValueAtTime(freq, now);
           
-          gain.gain.setValueAtTime(0.22 / (idx + 1), now);
+          gain.gain.setValueAtTime(0.25 / (idx + 1), now);
           gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8 + idx * 0.3);
           
           osc.connect(gain);
@@ -343,23 +344,37 @@ function initDigitalDeepa() {
       console.warn('AudioContext temple chime:', e);
     }
 
-    // 2. Play Pure "Jai Shri Ram" Devotional Voice Sound
+    // 2. Play Pure "Jai Shri Ram" Voice Audio
     try {
-      if (!deepaAudio) {
-        deepaAudio = new Audio('/static/audio/jai_shree_ram.mp3');
-      }
-      deepaAudio.currentTime = 0;
-      deepaAudio.volume = 1.0;
-      const playPromise = deepaAudio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(err => {
-          console.warn('HTML5 audio play blocked/failed, falling back to SpeechSynthesis:', err);
-          fallbackSpeechSynthesis();
-        });
+      const player = document.getElementById('deepaAudioPlayer');
+      if (player) {
+        player.currentTime = 0;
+        player.volume = 1.0;
+        const playPromise = player.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.warn('HTML5 audio element error, trying secondary fallback:', err);
+            tryFallbackAudio();
+          });
+        }
+      } else {
+        tryFallbackAudio();
       }
     } catch (err) {
       console.warn('Audio playback exception:', err);
-      fallbackSpeechSynthesis();
+      tryFallbackAudio();
+    }
+
+    function tryFallbackAudio() {
+      try {
+        const fallbackAudio = new Audio('/static/audio/jai_shri_ram.wav');
+        fallbackAudio.volume = 1.0;
+        fallbackAudio.play().catch(() => {
+          fallbackSpeechSynthesis();
+        });
+      } catch (e) {
+        fallbackSpeechSynthesis();
+      }
     }
 
     function fallbackSpeechSynthesis() {
