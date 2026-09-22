@@ -102,16 +102,7 @@ def run_tests():
         else:
             report("Guru Profile Flow", False, "No gurus found")
 
-        # 11. Granthalaya Library & Detail
-        res = client.get('/granthalaya/')
-        report("Granthalaya Index", res.status_code == 200 and "Granthalaya".encode('utf-8') in res.data)
-        
-        book = Book.query.first()
-        if book:
-            res = client.get(f'/granthalaya/book/{book.id}')
-            report("Granthalaya Book Detail", res.status_code == 200 and book.title.encode('utf-8') in res.data)
-
-        # 12. Pravachana & Detail
+        # 11. Pravachana & Detail
         res = client.get('/pravachana/')
         report("Pravachana Index", res.status_code == 200 and "Pravachana".encode('utf-8') in res.data)
         
@@ -186,7 +177,7 @@ def run_tests():
 
         # Admin Content Pages
         res = client.get('/admin/content/books')
-        report("Admin Books List", res.status_code == 200 and b"Granthalaya Books" in res.data)
+        report("Admin Books List", res.status_code == 200 and b"Books" in res.data)
 
         res = client.get('/admin/content/media')
         report("Admin Media List", res.status_code == 200 and b"Pravachana Media" in res.data)

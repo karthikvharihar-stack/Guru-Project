@@ -390,35 +390,7 @@
   </div>
 </section>
 
-<!-- ════════════════════════════════ GRANTHALAYA PREVIEW ════════════════════════════ -->
-{% if featured_books %}
-<section style="padding: 70px 20px; background: #F5EDD8;">
-  <div class="container">
-    <div class="section-hdr">
-      <h2>Granthalaya</h2>
-      <p>Digital library of scriptures, commentaries and resources</p>
-      <div class="gold-line"></div>
-    </div>
-    <div class="card-grid" style="margin-bottom: 40px;">
-      {% for book in featured_books %}
-      <div class="guru-card fade-in">
-        <div style="display: flex; gap: 16px; align-items: flex-start;">
-          <div style="width: 60px; height: 80px; background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📖</div>
-          <div>
-            <h4 class="font-serif" style="color: var(--color-primary); margin-bottom: 4px;">{{ book.title }}</h4>
-            {% if book.author %}<p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 8px;">{{ book.author }}</p>{% endif %}
-            {% if book.category %}<span style="font-size: 0.75rem; background: rgba(201,146,42,0.1); color: var(--color-gold); padding: 2px 10px; border-radius: 10px;">{{ book.category }}</span>{% endif %}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    <div style="text-align: center;">
-      <a href="{{ url_for('granthalaya.index') }}" class="btn btn-primary">Visit Granthalaya</a>
-    </div>
-  </div>
-</section>
-{% endif %}
+
 
 <!-- ════════════════════════════════ UPCOMING EVENTS ═════════════════════════════════ -->
 {% if upcoming_events %}

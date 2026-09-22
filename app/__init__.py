@@ -51,7 +51,6 @@ def create_app(config_name='development'):
     from app.routes.guru import guru_bp
     from app.routes.lekhana import lekhana_bp
     from app.routes.seva import seva_bp
-    from app.routes.granthalaya import granthalaya_bp
     from app.routes.pravachana import pravachana_bp
     from app.routes.calendar import calendar_bp
     from app.routes.search import search_bp
@@ -63,7 +62,6 @@ def create_app(config_name='development'):
     app.register_blueprint(guru_bp, url_prefix='/guru')
     app.register_blueprint(lekhana_bp, url_prefix='/lekhana')
     app.register_blueprint(seva_bp)
-    app.register_blueprint(granthalaya_bp, url_prefix='/granthalaya')
     app.register_blueprint(pravachana_bp, url_prefix='/pravachana')
     app.register_blueprint(calendar_bp, url_prefix='/calendar')
     app.register_blueprint(search_bp, url_prefix='/search')

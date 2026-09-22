@@ -44,12 +44,6 @@
           </a>
         </li>
         <li>
-          <a href="{{ url_for('granthalaya.index') }}" class="nav-pill {% if 'granthalaya' in request.path %}active{% endif %}">
-            <span class="nav-pill-icon">📖</span>
-            <span class="nav-pill-text">Granthalaya</span>
-          </a>
-        </li>
-        <li>
           <a href="{{ url_for('pravachana.index') }}" class="nav-pill {% if 'pravachana' in request.path %}active{% endif %}">
             <span class="nav-pill-icon">🎙️</span>
             <span class="nav-pill-text">Pravachana</span>
@@ -94,9 +88,6 @@
     </a>
     <a href="{{ url_for('lekhana.index') }}" class="{% if 'lekhana' in request.path %}active{% endif %}">
       <span class="nav-pill-icon">✍️</span> Lekhana Seva
-    </a>
-    <a href="{{ url_for('granthalaya.index') }}" class="{% if 'granthalaya' in request.path %}active{% endif %}">
-      <span class="nav-pill-icon">📖</span> Granthalaya
     </a>
     <a href="{{ url_for('pravachana.index') }}" class="{% if 'pravachana' in request.path %}active{% endif %}">
       <span class="nav-pill-icon">🎙️</span> Pravachana
@@ -145,7 +136,6 @@
           <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
             <li><a href="{{ url_for('guru.parampara') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Guru Parampara</a></li>
             <li><a href="{{ url_for('lekhana.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Lekhana Seva</a></li>
-            <li><a href="{{ url_for('granthalaya.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Granthalaya Library</a></li>
             <li><a href="{{ url_for('pravachana.index') }}" style="color: rgba(253,246,227,0.85); text-decoration: none;">Pravachana Discourses</a></li>
           </ul>
         </div>
