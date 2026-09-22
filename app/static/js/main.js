@@ -275,7 +275,7 @@ function initDigitalDeepa() {
     playDevotionalDeepaVoice();
 
     if (window.showToast) {
-      window.showToast('॥ जय श्री राम ॥ श्री दिग्विजय मूलरामो विजयते ॥ Deepa offered with devotion!', 'success');
+      window.showToast('॥ जय श्री राम ॥ Deepa offered with devotion!', 'success');
     }
 
     // 6. Background sync with backend API
@@ -303,6 +303,15 @@ function initDigitalDeepa() {
     }
   };
 
+  // Pre-load dedicated devotional audio for instant playback
+  let deepaAudio = null;
+  try {
+    deepaAudio = new Audio('/static/audio/jai_shree_ram.mp3');
+    deepaAudio.preload = 'auto';
+  } catch (e) {
+    console.warn('Deepa audio init error:', e);
+  }
+
   function playDevotionalDeepaVoice() {
     // 1. Play Resonant Temple Bell Chime (Web Audio API)
     try {
@@ -320,7 +329,7 @@ function initDigitalDeepa() {
           osc.type = idx === 0 ? 'sine' : 'triangle';
           osc.frequency.setValueAtTime(freq, now);
           
-          gain.gain.setValueAtTime(0.20 / (idx + 1), now);
+          gain.gain.setValueAtTime(0.22 / (idx + 1), now);
           gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8 + idx * 0.3);
           
           osc.connect(gain);
@@ -334,33 +343,46 @@ function initDigitalDeepa() {
       console.warn('AudioContext temple chime:', e);
     }
 
-    // 2. Devotional Spoken Voice Chant ("Jai Sri Ram! Sri Digvijaya Moola Ramo Vijayate!")
+    // 2. Play Pure "Jai Shri Ram" Devotional Voice Sound
     try {
-      if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        
-        const chantUtter = new SpeechSynthesisUtterance("जय श्री राम ! श्री दिग्विजय मूलरामो विजयते !");
-        chantUtter.rate = 0.88; // Devotional, meditative tempo
-        chantUtter.pitch = 1.05; // Sacred, bright tone
-        chantUtter.volume = 1.0;
-        
-        // Pick best available Hindi / Sanskrit / Indian English voice
-        const voices = window.speechSynthesis.getVoices();
-        const devotionalVoice = voices.find(v => v.lang === 'hi-IN' || v.lang === 'sa' || v.lang === 'mr-IN')
-                             || voices.find(v => v.lang === 'en-IN' || v.name.includes('India'))
-                             || voices.find(v => v.lang.startsWith('hi') || v.lang.startsWith('en'));
-        
-        if (devotionalVoice) {
-          chantUtter.voice = devotionalVoice;
-        }
-
-        // Slight delay to let the temple bell resonate first
-        setTimeout(() => {
-          window.speechSynthesis.speak(chantUtter);
-        }, 200);
+      if (!deepaAudio) {
+        deepaAudio = new Audio('/static/audio/jai_shree_ram.mp3');
+      }
+      deepaAudio.currentTime = 0;
+      deepaAudio.volume = 1.0;
+      const playPromise = deepaAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.warn('HTML5 audio play blocked/failed, falling back to SpeechSynthesis:', err);
+          fallbackSpeechSynthesis();
+        });
       }
     } catch (err) {
-      console.warn('SpeechSynthesis chant:', err);
+      console.warn('Audio playback exception:', err);
+      fallbackSpeechSynthesis();
+    }
+
+    function fallbackSpeechSynthesis() {
+      try {
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+          const chantUtter = new SpeechSynthesisUtterance("Jai Shri Ram");
+          chantUtter.rate = 0.95;
+          chantUtter.pitch = 1.0;
+          chantUtter.volume = 1.0;
+          
+          const voices = window.speechSynthesis.getVoices();
+          const devotionalVoice = voices.find(v => v.lang === 'hi-IN' || v.lang === 'sa' || v.lang === 'mr-IN')
+                               || voices.find(v => v.lang === 'en-IN' || v.name.includes('India'))
+                               || voices.find(v => v.lang.startsWith('en'));
+          if (devotionalVoice) {
+            chantUtter.voice = devotionalVoice;
+          }
+          window.speechSynthesis.speak(chantUtter);
+        }
+      } catch (e) {
+        console.warn('SpeechSynthesis fallback error:', e);
+      }
     }
   }
 
