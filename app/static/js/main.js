@@ -280,15 +280,79 @@ function initDigitalDeepa() {
       deepaCanvas.insertAdjacentHTML('afterbegin', newDiyaHtml);
     }
 
+    // Play sacred devotional temple bell chime and "Jai Sri Ram" voice chant
+    playDevotionalDeepaVoice();
+
     // Close modal and reset fields
     window.closeDeepaModal();
     if (nameInput) nameInput.value = '';
     if (prayerInput) prayerInput.value = '';
 
     if (window.showToast) {
-      window.showToast('॥ श्री मूलरामो विजयते ॥ Deepa offered successfully!', 'success');
+      window.showToast('॥ जय श्री राम ॥ श्री दिग्विजय मूलरामो विजयते ॥ Deepa offered with devotion!', 'success');
     }
   };
+
+  function playDevotionalDeepaVoice() {
+    // 1. Play Resonant Temple Bell Chime (Web Audio API)
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+        
+        // Harmonic frequencies for authentic Indian temple bell (Ghanta)
+        const freqs = [587.33, 880.00, 1174.66, 1760.00];
+        freqs.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          
+          osc.type = idx === 0 ? 'sine' : 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          
+          gain.gain.setValueAtTime(0.20 / (idx + 1), now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8 + idx * 0.3);
+          
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          
+          osc.start(now);
+          osc.stop(now + 3.2);
+        });
+      }
+    } catch (e) {
+      console.warn('AudioContext temple chime:', e);
+    }
+
+    // 2. Devotional Spoken Voice Chant ("Jai Sri Ram! Sri Digvijaya Moola Ramo Vijayate!")
+    try {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        
+        const chantUtter = new SpeechSynthesisUtterance("जय श्री राम ! श्री दिग्विजय मूलरामो विजयते !");
+        chantUtter.rate = 0.88; // Devotional, meditative tempo
+        chantUtter.pitch = 1.05; // Sacred, bright tone
+        chantUtter.volume = 1.0;
+        
+        // Pick best available Hindi / Sanskrit / Indian English voice
+        const voices = window.speechSynthesis.getVoices();
+        const devotionalVoice = voices.find(v => v.lang === 'hi-IN' || v.lang === 'sa' || v.lang === 'mr-IN')
+                             || voices.find(v => v.lang === 'en-IN' || v.name.includes('India'))
+                             || voices.find(v => v.lang.startsWith('hi') || v.lang.startsWith('en'));
+        
+        if (devotionalVoice) {
+          chantUtter.voice = devotionalVoice;
+        }
+
+        // Slight delay to let the temple bell resonate first
+        setTimeout(() => {
+          window.speechSynthesis.speak(chantUtter);
+        }, 200);
+      }
+    } catch (err) {
+      console.warn('SpeechSynthesis chant:', err);
+    }
+  }
 
   // Initial fetch on page load
   window.fetchDeepaData();
