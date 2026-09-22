@@ -1,35 +1,254 @@
 {% extends 'base.html' %}
-{% block title %}Lekhana Seva — Select Guru | Uttaradi Math{% endblock %}
+{% block title %}Guru Lekhana Seva — Select Sacred Guru{% endblock %}
+{% block description %}Offer your devotion through sacred Nama and Mantra Lekhana Seva for all 42 Peethadhipatis.{% endblock %}
+
 {% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/lekhana.css') }}">
+<style>
+  /* Sacred Lekhana Design System */
+  .lekhana-hero {
+    background: radial-gradient(circle at 50% 30%, #4A1A1A 0%, #2A0E0E 50%, #170808 100%);
+    padding: 85px 20px 65px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 74px;
+    border-bottom: 3px solid #BF953F;
+  }
+
+  .lekhana-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(201,146,42,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 85% 50%, rgba(201,146,42,0.15) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .lekhana-sanskrit-1 {
+    font-family: 'Noto Serif Devanagari', serif;
+    color: #FCF6BA;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.85), 0 0 24px rgba(252,246,186,0.35);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .lekhana-sanskrit-2 {
+    font-family: 'Noto Serif Devanagari', serif;
+    color: #E5C158;
+    font-size: clamp(1.15rem, 2.3vw, 1.6rem);
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.85), 0 0 20px rgba(229,193,88,0.4);
+    line-height: 1.4;
+  }
+
+  .lekhana-hero-title {
+    font-family: 'Cinzel', 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .lekhana-hero-sub {
+    color: rgba(253, 246, 227, 0.9);
+    font-size: 1.12rem;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    max-width: 680px;
+    margin: 0 auto 20px;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+  }
+
+  .lekhana-badges {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+
+  .lekhana-badge {
+    background: rgba(44, 24, 16, 0.75);
+    border: 1px solid rgba(201, 146, 42, 0.6);
+    border-radius: 20px;
+    padding: 6px 14px;
+    color: #FCF6BA;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .gold-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 22px auto 0;
+    max-width: 320px;
+  }
+
+  .gold-divider::before, .gold-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 50%, #AA771C 100%);
+  }
+
+  /* Search Bar */
+  .lekhana-filter-wrapper {
+    max-width: 520px;
+    margin: -24px auto 45px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .lekhana-filter-input {
+    width: 100%;
+    padding: 16px 24px 16px 50px;
+    border-radius: 30px;
+    border: 2px solid #BF953F;
+    background: #FFFDF9;
+    box-shadow: 0 8px 30px rgba(44, 24, 16, 0.15);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  .lekhana-filter-input:focus {
+    border-color: #8B1A1A;
+    box-shadow: 0 0 20px rgba(201, 146, 42, 0.45);
+  }
+
+  .lekhana-filter-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #BF953F;
+  }
+
+  /* Sacred Card Styling */
+  .lekhana-guru-card {
+    background: linear-gradient(180deg, #FFFFFF 0%, #FFFDF7 100%);
+    border: 2px solid rgba(201, 146, 42, 0.35);
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 8px 24px rgba(44, 24, 16, 0.08);
+    transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lekhana-guru-card:hover {
+    transform: translateY(-6px);
+    border-color: #BF953F;
+    box-shadow: 0 16px 36px rgba(139, 26, 26, 0.18), 0 0 24px rgba(201, 146, 42, 0.3);
+  }
+
+  /* Count selector button */
+  .count-btn-small {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(201,146,42,0.4);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #FFFDF9;
+    color: #4A2C17;
+  }
+
+  input[type="radio"]:checked + .count-btn-small {
+    background: linear-gradient(135deg, #8B1A1A, #591010) !important;
+    color: #FCF6BA !important;
+    border-color: #BF953F !important;
+    box-shadow: 0 3px 10px rgba(139, 26, 26, 0.35);
+    transform: scale(1.08);
+  }
+
+  .count-btn-small:hover {
+    border-color: #8B1A1A !important;
+    background: #FFF8EA !important;
+  }
+</style>
 {% endblock %}
+
 {% block content %}
 
-<section style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); padding: 60px 20px 50px; text-align: center; margin-top: 74px;">
+<!-- Sacred Devotional Hero Banner -->
+<section class="lekhana-hero">
   <div class="container">
-    <div style="font-size: 2rem; margin-bottom: 12px;">🪷</div>
-    <h1 class="font-serif" style="color: white; font-size: 2.5rem; margin-bottom: 10px;">Guru Lekhana Seva</h1>
-    <p style="color: rgba(253,246,227,0.75); max-width: 500px; margin: 0 auto; line-height: 1.7;">
-      Select a Guru from the Parampara, choose your Seva count, and begin your devotional Lekhana practice.
+    <div class="lekhana-sanskrit-1">॥ श्री दिग्विजय मूलरामो विजयते ॥</div>
+    <div class="lekhana-sanskrit-2">॥ श्रीमद्जगद्गुरु श्रीमन् मध्वाचार्य मूलमहासंस्थानम् ॥</div>
+    <h1 class="lekhana-hero-title">Guru Lekhana Seva</h1>
+    <p class="lekhana-hero-sub">
+      Offer your sacred devotion through meditative Nama and Mantra writing practice (Kaya-Vacha-Manasa Seva)
     </p>
+
+    <!-- Devotional Feature Pills -->
+    <div class="lekhana-badges">
+      <span class="lekhana-badge">✍️ Type or Handwrite Mode</span>
+      <span class="lekhana-badge">📜 42 Sacred Gurus</span>
+      <span class="lekhana-badge">🕉️ 11 · 21 · 51 · 108 · 1008 Count Sadhana</span>
+      <span class="lekhana-badge">📄 Devotional Certificate</span>
+    </div>
+
+    <div class="gold-divider">
+      <span style="color: #FCF6BA; font-size: 1.2rem;">🪷</span>
+    </div>
   </div>
 </section>
 
-<div class="container" style="padding: 50px 20px 80px;">
+<!-- Filter Search Bar -->
+<div class="container" style="padding: 0 20px;">
+  <div class="lekhana-filter-wrapper">
+    <span class="lekhana-filter-icon">🔍</span>
+    <input type="text" id="lekhanaSearchInput" class="lekhana-filter-input" placeholder="Search Guru by name or order (e.g. Madhvacharya, 42, Jayateertha)...">
+  </div>
+</div>
+
+<!-- Main Lekhana Seva Cards Container -->
+<div class="container" style="padding: 0 20px 90px; max-width: 1320px;">
 
   {% if gurus %}
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px;" id="lekhanaCardsGrid">
     {% for guru in gurus %}
-    <div class="guru-card fade-in" style="padding: 28px;">
+    <div class="lekhana-guru-card fade-in" data-name="{{ guru.name | lower }}" data-order="{{ guru.guru_order }}">
 
       <!-- Guru header -->
-      <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 20px;">
-        <img src="{{ guru.image_url or url_for('static', filename='images/placeholder-guru.svg') }}"
-             alt="{{ guru.name }}"
-             style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-gold); flex-shrink: 0;">
+      <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 18px;">
+        <div style="position: relative; width: 72px; height: 72px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #BF953F, #FCF6BA, #AA771C); flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <img src="{{ guru.image_url or url_for('static', filename='images/placeholder-guru.svg') }}"
+               alt="{{ guru.name }}"
+               style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;">
+        </div>
         <div>
-          <div style="font-size: 0.72rem; color: var(--color-gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 3px;">Guru #{{ guru.guru_order }}</div>
-          <h3 class="font-serif" style="color: var(--color-primary); font-size: 1.15rem; line-height: 1.3; margin-bottom: 2px;">{{ guru.name }}</h3>
+          <div style="font-size: 0.72rem; color: #AA771C; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px; font-weight: 700;">PEETHADHIPATI #{{ "%02d" % guru.guru_order }}</div>
+          <h3 class="font-serif" style="color: #4A1A1A; font-size: 1.25rem; line-height: 1.3; margin-bottom: 2px; font-weight: 700;">{{ guru.name }}</h3>
           {% if guru.traditional_name %}
           <div style="font-size: 0.82rem; color: var(--color-text-muted); font-style: italic;">{{ guru.traditional_name }}</div>
           {% endif %}
@@ -38,48 +257,48 @@
 
       <!-- Lekhana preview -->
       {% if guru.lekhana_text and '[PLACEHOLDER' not in guru.lekhana_text and '[LEKHANA TEXT' not in guru.lekhana_text %}
-      <div style="background: linear-gradient(135deg, var(--color-background), #FFF3E0); border: 1px solid var(--color-gold); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; text-align: center;">
-        <div style="font-size: 0.7rem; color: var(--color-text-muted); letter-spacing: 1px; margin-bottom: 4px;">LEKHANA</div>
-        <div class="font-serif" style="color: var(--color-primary); font-size: 0.95rem; line-height: 1.5;">{{ guru.lekhana_text | truncate(60) }}</div>
+      <div style="background: linear-gradient(135deg, #FFFDF9 0%, #FFF8EA 100%); border: 1.5px solid rgba(201,146,42,0.5); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <div style="font-size: 0.7rem; color: #AA771C; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 4px;">SACRED LEKHANA MANTRA</div>
+        <div class="font-serif" style="color: #8B1A1A; font-size: 0.95rem; line-height: 1.5; font-weight: 600;">{{ guru.lekhana_text | truncate(70) }}</div>
       </div>
       {% else %}
-      <div style="background: rgba(201,146,42,0.05); border: 1px dashed var(--color-border); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; text-align: center; color: var(--color-text-muted); font-size: 0.85rem;">
-        Lekhana awaiting verification
+      <div style="background: rgba(201,146,42,0.06); border: 1px dashed rgba(201,146,42,0.4); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; text-align: center; color: var(--color-text-muted); font-size: 0.85rem;">
+        ॥ श्री गुरुभ्यो नमः ॥
       </div>
       {% endif %}
 
       <!-- Seva form -->
-      <form method="POST" action="{{ url_for('lekhana.start', guru_slug=guru.slug) }}">
+      <form method="POST" action="{{ url_for('lekhana.start', guru_slug=guru.slug) }}" style="margin-top: auto;">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
         <!-- Count selector -->
-        <div style="margin-bottom: 16px;">
-          <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 10px; text-align: center;">Choose your Seva count</div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+        <div style="margin-bottom: 18px;">
+          <div style="font-size: 0.8rem; color: #4A1A1A; font-weight: 600; margin-bottom: 10px; text-align: center; letter-spacing: 0.5px;">Select Seva Target (Japa Count):</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; align-items: center;">
             {% for count in [11, 21, 51, 108] %}
             <label style="cursor: pointer;">
               <input type="radio" name="target_count" value="{{ count }}" {% if count == 108 %}checked{% endif %} style="display: none;">
-              <span class="count-btn-small" style="display: inline-block; width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--color-border); text-align: center; line-height: 48px; font-family: var(--font-serif); font-size: 1rem; cursor: pointer; transition: all 0.2s; background: var(--color-background);">{{ count }}</span>
+              <span class="count-btn-small">{{ count }}</span>
             </label>
             {% endfor %}
             <label style="cursor: pointer;">
               <input type="radio" name="target_count" value="1008" style="display: none;">
-              <span class="count-btn-small" style="display: inline-block; padding: 0 14px; height: 52px; border-radius: 26px; border: 2px solid var(--color-border); text-align: center; line-height: 48px; font-family: var(--font-serif); font-size: 0.9rem; cursor: pointer; transition: all 0.2s; background: var(--color-background);">1008</span>
+              <span class="count-btn-small" style="width: auto; padding: 0 14px; border-radius: 24px; font-size: 0.88rem;">1008</span>
             </label>
           </div>
         </div>
 
         <!-- Mode selector -->
-        <div style="margin-bottom: 16px;">
-          <select name="mode" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-background); font-family: var(--font-body);">
-            <option value="type">✏️ Type Mode</option>
-            <option value="handwrite">✍️ Handwrite Mode</option>
-            <option value="mobile">📱 Mobile Mode</option>
+        <div style="margin-bottom: 18px;">
+          <select name="mode" class="form-control" style="width: 100%; padding: 11px 14px; border: 1.5px solid rgba(201,146,42,0.4); border-radius: 10px; background: #FFFDF9; font-family: var(--font-body); font-size: 0.95rem; font-weight: 500; color: #4A1A1A; outline: none;">
+            <option value="type">✏️ Type Mode (Keyboard / Transliteration)</option>
+            <option value="handwrite">✍️ Digital Canvas / Handwriting Pad</option>
+            <option value="mobile">📱 Touch Tap Counter Mode</option>
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px; font-size: 1rem;">
-          Begin Lekhana Seva
+        <button type="submit" class="btn" style="width: 100%; padding: 13px; font-size: 1.02rem; font-weight: 700; background: linear-gradient(135deg, #8B1A1A 0%, #591010 100%); color: #FCF6BA; border: 1.5px solid #BF953F; border-radius: 24px; box-shadow: 0 4px 14px rgba(139,26,26,0.25); cursor: pointer; transition: all 0.25s ease;">
+          ✍️ Begin Lekhana Seva
         </button>
       </form>
 
@@ -87,12 +306,18 @@
     {% endfor %}
   </div>
 
+  <div id="noLekhanaResults" style="display: none; text-align: center; padding: 60px 20px;">
+    <div style="font-size: 2.5rem; margin-bottom: 12px;">🙏</div>
+    <h3 class="font-serif" style="color: var(--color-primary); margin-bottom: 8px;">No matching Guru found</h3>
+    <p style="color: var(--color-text-muted);">Please try searching by a different name or number from 1 to 42.</p>
+  </div>
+
   {% else %}
   <div style="text-align: center; padding: 80px 20px;">
     <div style="font-size: 3rem; margin-bottom: 20px;">🙏</div>
-    <h2 class="font-serif" style="color: var(--color-primary); margin-bottom: 12px;">No Gurus Available Yet</h2>
+    <h2 class="font-serif" style="color: var(--color-primary); margin-bottom: 12px;">Guru Parampara Loading</h2>
     <p style="color: var(--color-text-light); max-width: 450px; margin: 0 auto 28px; line-height: 1.7;">
-      The Guru Parampara records are being verified and prepared by our team. Please check back soon.
+      Loading sacred Guru Parampara records for Lekhana Seva...
     </p>
     <a href="{{ url_for('main.index') }}" class="btn btn-primary">Return Home</a>
   </div>
@@ -100,17 +325,29 @@
 
 </div>
 
-<style>
-/* Radio button selection highlight */
-input[type="radio"]:checked + .count-btn-small {
-  background: var(--color-primary) !important;
-  color: white !important;
-  border-color: var(--color-primary) !important;
-}
-.count-btn-small:hover {
-  border-color: var(--color-gold) !important;
-  background: rgba(201,146,42,0.08) !important;
-}
-</style>
+<script>
+// Live Search Filter for Lekhana Gurus
+document.getElementById('lekhanaSearchInput')?.addEventListener('input', function(e) {
+  const query = e.target.value.trim().toLowerCase();
+  const cards = document.querySelectorAll('.lekhana-guru-card');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const name = card.dataset.name || '';
+    const order = card.dataset.order || '';
+    if (name.includes(query) || order === query || ('#' + order) === query) {
+      card.style.display = 'flex';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  const noResults = document.getElementById('noLekhanaResults');
+  if (noResults) {
+    noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
+  }
+});
+</script>
 
 {% endblock %}
