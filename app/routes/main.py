@@ -94,3 +94,84 @@ def robots():
     from flask import Response
     content = "User-agent: *\nDisallow: /admin/\nDisallow: /auth/\nSitemap: https://uttaradi-math.example.com/sitemap.xml"
     return Response(content, mimetype='text/plain')
+
+
+# ── DIGITAL DEEPA LIVE API ───────────────────────────────────────────────────
+
+def _get_deepa_file():
+    import os
+    from flask import current_app
+    upload_folder = current_app.config.get('UPLOAD_FOLDER', 'uploads')
+    os.makedirs(upload_folder, exist_ok=True)
+    return os.path.join(upload_folder, 'deepas.json')
+
+
+def _load_deepa_data():
+    import json, os
+    file_path = _get_deepa_file()
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+    # Default initial state with a sacred baseline count
+    return {
+        'count': 108,
+        'diyas': [
+            {'name': 'Sri Devotee', 'prayer': 'Guru Smarana & Lokakshema', 'time': 'Just now'},
+            {'name': 'Bhakta', 'prayer': 'Sri Moola Rama Kripa', 'time': 'Today'},
+            {'name': 'Hari Bhakta', 'prayer': 'Vidya & Jnana Prapti', 'time': 'Today'}
+        ]
+    }
+
+
+def _save_deepa_data(data):
+    import json
+    file_path = _get_deepa_file()
+    try:
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+
+@main_bp.route('/api/deepa', methods=['GET'])
+def get_deepas():
+    from flask import jsonify
+    data = _load_deepa_data()
+    return jsonify(data)
+
+
+from app.extensions import csrf
+
+@main_bp.route('/api/deepa/light', methods=['POST'])
+@csrf.exempt
+def light_deepa():
+    from flask import request, jsonify
+    from datetime import datetime
+    req_data = request.get_json(silent=True) or {}
+    name = (req_data.get('name') or 'A Devotee').strip()[:60]
+    prayer = (req_data.get('prayer') or 'Guru Smarana & Peace').strip()[:140]
+
+    data = _load_deepa_data()
+    data['count'] = data.get('count', 108) + 1
+
+    new_diya = {
+        'name': name or 'A Devotee',
+        'prayer': prayer or 'Guru Smarana & Peace',
+        'time': datetime.now().strftime('%d %b, %I:%M %p')
+    }
+
+    diyas = data.get('diyas', [])
+    diyas.insert(0, new_diya)
+    data['diyas'] = diyas[:50]  # Keep latest 50
+
+    _save_deepa_data(data)
+
+    return jsonify({
+        'success': True,
+        'count': data['count'],
+        'diya': new_diya,
+        'message': '॥ श्री मूलरामो विजयते ॥ Deepa offered successfully!'
+    })

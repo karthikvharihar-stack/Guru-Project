@@ -395,19 +395,71 @@
 
 
 <!-- ════════════════════════════════ DIGITAL DEEPA ═══════════════════════════════════ -->
-<section style="padding: 80px 20px; background: var(--color-dark-bg); text-align: center;">
-  <div class="container" style="max-width: 700px;">
-    <div style="font-size: 2rem; margin-bottom: 16px;">🪔</div>
-    <h2 class="font-serif" style="color: var(--color-gold); font-size: 2rem; margin-bottom: 12px;">Light a Digital Deepa</h2>
-    <p style="color: rgba(253,246,227,0.65); line-height: 1.7; max-width: 500px; margin: 0 auto 28px; font-size: 0.95rem;">
-      Offer a symbolic digital diya in remembrance or devotion.<br>
-      <em style="font-size: 0.85rem; opacity: 0.7;">Note: A digital offering is a symbolic gesture and does not replace a physical religious offering.</em>
+<section style="padding: 85px 20px 90px; background: radial-gradient(circle at 50% 30%, #3A1818 0%, #200D0D 50%, #110505 100%); text-align: center; position: relative; overflow: hidden; border-top: 3px solid #BF953F;">
+  <div class="container" style="max-width: 820px; position: relative; z-index: 1;">
+    <div style="font-family: 'Noto Serif Devanagari', serif; color: #FCF6BA; font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
+      ॥ तमसो मा ज्योतिर्गमय ॥
+    </div>
+    <h2 class="font-serif" style="color: #FCF6BA; font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 10px; font-weight: 700;">
+      Light a Digital Deepa
+    </h2>
+    <p style="color: rgba(253,246,227,0.8); line-height: 1.7; max-width: 580px; margin: 0 auto 20px; font-size: 1rem;">
+      Offer a symbolic digital deepa in remembrance, Guru Smarana, or personal devotion.
     </p>
-    <div id="deepa-canvas" style="min-height: 100px; position: relative; margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; align-items: center;"></div>
-    <button id="add-deepa-btn" class="btn btn-gold" style="padding: 12px 28px;">
+
+    <!-- Live Counter Badge -->
+    <div style="display: inline-flex; align-items: center; gap: 12px; background: rgba(44, 24, 16, 0.85); border: 1.5px solid #BF953F; border-radius: 30px; padding: 10px 24px; margin-bottom: 30px; box-shadow: 0 4px 18px rgba(0,0,0,0.4);">
+      <span style="font-size: 1.5rem;">🪔</span>
+      <div style="text-align: left;">
+        <div style="font-size: 0.72rem; color: #FCF6BA; letter-spacing: 1.5px; text-transform: uppercase; font-weight: bold;">LIVE OFFERINGS COUNT</div>
+        <div style="font-size: 1.4rem; font-weight: 800; color: #FFFDF9; font-family: 'Playfair Display', serif;" id="deepa-live-count">
+          108 <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>
+        </div>
+      </div>
+      <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #4caf50; box-shadow: 0 0 8px #4caf50; margin-left: 6px;"></span>
+    </div>
+
+    <!-- Sacred Altar Tray for Diyas -->
+    <div style="background: linear-gradient(180deg, rgba(58, 24, 24, 0.6) 0%, rgba(30, 12, 12, 0.9) 100%); border: 2px solid rgba(201, 146, 42, 0.4); border-radius: 20px; padding: 24px 20px; margin-bottom: 32px; box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 8px 30px rgba(0,0,0,0.5); min-height: 140px; position: relative;">
+      <div style="font-size: 0.75rem; color: #E5C158; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; font-weight: 600;">
+        ✨ Sacred Altar of Devotion ✨
+      </div>
+      <div id="deepa-canvas" style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: center; min-height: 70px;">
+        <!-- Diyas render dynamically here -->
+      </div>
+    </div>
+
+    <button id="add-deepa-btn" onclick="openDeepaModal()" class="btn btn-gold" style="padding: 14px 34px; font-size: 1.1rem; font-weight: 700; border-radius: 30px; box-shadow: 0 6px 20px rgba(201,146,42,0.4); cursor: pointer;">
       🪔 Light a Deepa
     </button>
   </div>
 </section>
+
+<!-- Deepa Offering Modal -->
+<div id="deepaOfferingModal" style="display: none; position: fixed; inset: 0; background: rgba(18, 6, 6, 0.88); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;" onclick="closeDeepaModal(event)">
+  <div style="background: linear-gradient(135deg, #FFFDF9 0%, #FBF6EB 100%); border: 2.5px solid #BF953F; border-radius: 24px; padding: 32px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 30px rgba(201,146,42,0.35); position: relative;" onclick="event.stopPropagation()">
+    <button onclick="closeDeepaModal()" style="position: absolute; top: 14px; right: 18px; background: none; border: none; font-size: 1.8rem; color: #8B1A1A; cursor: pointer;">&times;</button>
+    
+    <div style="font-size: 2.5rem; margin-bottom: 10px; animation: divaFlicker 2s infinite alternate;">🪔</div>
+    <h3 style="font-family: 'Playfair Display', serif; color: #8B1A1A; font-size: 1.6rem; margin-bottom: 6px;">Offer a Digital Deepa</h3>
+    <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 22px; line-height: 1.5;">
+      Offer your symbolic lamp for Guru Smarana, peace, and auspicious blessings.
+    </p>
+
+    <div style="text-align: left; margin-bottom: 16px;">
+      <label style="font-size: 0.82rem; font-weight: 700; color: #4A1A1A; display: block; margin-bottom: 6px;">Your Name (Optional)</label>
+      <input type="text" id="deepa-devotee-name" placeholder="e.g. Sri Harsha / A Devotee" style="width: 100%; padding: 12px 16px; border: 1.5px solid rgba(201,146,42,0.5); border-radius: 10px; background: #FFF; font-family: var(--font-body); font-size: 0.95rem; outline: none;">
+    </div>
+
+    <div style="text-align: left; margin-bottom: 24px;">
+      <label style="font-size: 0.82rem; font-weight: 700; color: #4A1A1A; display: block; margin-bottom: 6px;">Devotional Prayer / Sankalpa (Optional)</label>
+      <input type="text" id="deepa-devotee-prayer" placeholder="e.g. For Guru Kripa & Lokakshema" style="width: 100%; padding: 12px 16px; border: 1.5px solid rgba(201,146,42,0.5); border-radius: 10px; background: #FFF; font-family: var(--font-body); font-size: 0.95rem; outline: none;">
+    </div>
+
+    <button onclick="submitDeepaOffering()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #8B1A1A 0%, #591010 100%); color: #FCF6BA; font-size: 1.05rem; font-weight: 700; border: 1.5px solid #BF953F; border-radius: 24px; cursor: pointer; box-shadow: 0 4px 16px rgba(139,26,26,0.35); transition: all 0.2s;">
+      🪔 Light Deepa Now
+    </button>
+  </div>
+</div>
 
 {% endblock %}
