@@ -25,22 +25,57 @@
       {% endif %}
       
       <ul class="navbar-nav">
-        <li><a href="{{ url_for('main.index') }}">Home</a></li>
-        <li><a href="{{ url_for('guru.parampara') }}">Guru Parampara</a></li>
-        <li><a href="{{ url_for('lekhana.index') }}">Lekhana Seva</a></li>
-        <li><a href="{{ url_for('granthalaya.index') }}">Granthalaya</a></li>
-        <li><a href="{{ url_for('pravachana.index') }}">Pravachana</a></li>
-        <li><a href="{{ url_for('calendar_bp.index') }}">Calendar</a></li>
-        <li><a href="{{ url_for('jijnasa.index') }}">Guru Jijnasa</a></li>
+        <li>
+          <a href="{{ url_for('main.index') }}" class="nav-pill {% if request.path == '/' or request.endpoint == 'main.index' %}active{% endif %}">
+            <span class="nav-pill-icon">🪷</span>
+            <span class="nav-pill-text">Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('guru.parampara') }}" class="nav-pill {% if 'guru' in request.path %}active{% endif %}">
+            <span class="nav-pill-icon">📜</span>
+            <span class="nav-pill-text">Guru Parampara</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('lekhana.index') }}" class="nav-pill {% if 'lekhana' in request.path %}active{% endif %}">
+            <span class="nav-pill-icon">✍️</span>
+            <span class="nav-pill-text">Lekhana Seva</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('granthalaya.index') }}" class="nav-pill {% if 'granthalaya' in request.path %}active{% endif %}">
+            <span class="nav-pill-icon">📖</span>
+            <span class="nav-pill-text">Granthalaya</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('pravachana.index') }}" class="nav-pill {% if 'pravachana' in request.path %}active{% endif %}">
+            <span class="nav-pill-icon">🎙️</span>
+            <span class="nav-pill-text">Pravachana</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('calendar_bp.index') }}" class="nav-pill {% if 'calendar' in request.path %}active{% endif %}">
+            <span class="nav-pill-icon">🌕</span>
+            <span class="nav-pill-text">Calendar</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('jijnasa.index') }}" class="nav-pill {% if 'jijnasa' in request.path %}active{% endif %}">
+            <span class="nav-pill-icon">🪔</span>
+            <span class="nav-pill-text">Guru Jijnasa</span>
+          </a>
+        </li>
       </ul>
       
       <div class="navbar-auth">
         {% if current_user and current_user.is_authenticated %}
-          <a href="{{ url_for('seva.dashboard') }}" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.9rem;">My Seva</a>
-          <a href="{{ url_for('auth.logout') }}" class="btn btn-primary" style="padding: 7px 16px; font-size: 0.9rem;">Logout</a>
+          <a href="{{ url_for('seva.dashboard') }}" class="btn btn-nav-login">My Seva</a>
+          <a href="{{ url_for('auth.logout') }}" class="btn btn-nav-register">Logout</a>
         {% else %}
-          <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.9rem;">Login</a>
-          <a href="{{ url_for('auth.register') }}" class="btn btn-gold" style="padding: 7px 16px; font-size: 0.9rem;">Register</a>
+          <a href="{{ url_for('auth.login') }}" class="btn btn-nav-login">Login</a>
+          <a href="{{ url_for('auth.register') }}" class="btn btn-nav-register">Register</a>
         {% endif %}
       </div>
       
@@ -51,20 +86,36 @@
   </nav>
   
   <div class="mobile-nav" id="mobile-menu">
-    <a href="{{ url_for('main.index') }}">Home</a>
-    <a href="{{ url_for('guru.parampara') }}">Guru Parampara</a>
-    <a href="{{ url_for('lekhana.index') }}">Lekhana Seva</a>
-    <a href="{{ url_for('granthalaya.index') }}">Granthalaya</a>
-    <a href="{{ url_for('pravachana.index') }}">Pravachana</a>
-    <a href="{{ url_for('calendar_bp.index') }}">Calendar</a>
-    <a href="{{ url_for('jijnasa.index') }}">Guru Jijnasa</a>
-    {% if current_user and current_user.is_authenticated %}
-      <a href="{{ url_for('seva.dashboard') }}">My Seva</a>
-      <a href="{{ url_for('auth.logout') }}">Logout</a>
-    {% else %}
-      <a href="{{ url_for('auth.login') }}">Login</a>
-      <a href="{{ url_for('auth.register') }}">Register</a>
-    {% endif %}
+    <a href="{{ url_for('main.index') }}" class="{% if request.path == '/' or request.endpoint == 'main.index' %}active{% endif %}">
+      <span class="nav-pill-icon">🪷</span> Home
+    </a>
+    <a href="{{ url_for('guru.parampara') }}" class="{% if 'guru' in request.path %}active{% endif %}">
+      <span class="nav-pill-icon">📜</span> Guru Parampara
+    </a>
+    <a href="{{ url_for('lekhana.index') }}" class="{% if 'lekhana' in request.path %}active{% endif %}">
+      <span class="nav-pill-icon">✍️</span> Lekhana Seva
+    </a>
+    <a href="{{ url_for('granthalaya.index') }}" class="{% if 'granthalaya' in request.path %}active{% endif %}">
+      <span class="nav-pill-icon">📖</span> Granthalaya
+    </a>
+    <a href="{{ url_for('pravachana.index') }}" class="{% if 'pravachana' in request.path %}active{% endif %}">
+      <span class="nav-pill-icon">🎙️</span> Pravachana
+    </a>
+    <a href="{{ url_for('calendar_bp.index') }}" class="{% if 'calendar' in request.path %}active{% endif %}">
+      <span class="nav-pill-icon">🌕</span> Calendar
+    </a>
+    <a href="{{ url_for('jijnasa.index') }}" class="{% if 'jijnasa' in request.path %}active{% endif %}">
+      <span class="nav-pill-icon">🪔</span> Guru Jijnasa
+    </a>
+    <div style="display:flex; gap:10px; margin-top:10px; padding-top:12px; border-top:1px solid rgba(201,146,42,0.3);">
+      {% if current_user and current_user.is_authenticated %}
+        <a href="{{ url_for('seva.dashboard') }}" class="btn btn-nav-login" style="flex:1; text-align:center;">My Seva</a>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-nav-register" style="flex:1; text-align:center;">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}" class="btn btn-nav-login" style="flex:1; text-align:center;">Login</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-nav-register" style="flex:1; text-align:center;">Register</a>
+      {% endif %}
+    </div>
   </div>
   
   {% with messages = get_flashed_messages(with_categories=True) %}
