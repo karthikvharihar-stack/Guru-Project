@@ -229,6 +229,17 @@ function initDigitalDeepa() {
     const name = nameInput ? nameInput.value.trim() : '';
     const prayer = prayerInput ? prayerInput.value.trim() : '';
 
+    // 1. Immediately dismiss modal dialog and reset inputs
+    window.closeDeepaModal();
+    if (nameInput) nameInput.value = '';
+    if (prayerInput) prayerInput.value = '';
+
+    // 2. Immediately scroll smoothly to the Diya Altar section on the homepage
+    const deepaSection = document.getElementById('deepa-section') || deepaCanvas;
+    if (deepaSection) {
+      deepaSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
                       document.querySelector('input[name="csrf_token"]')?.value || '';
 
@@ -238,6 +249,36 @@ function initDigitalDeepa() {
       prayer: prayer || 'Guru Smarana & Lokakshema'
     };
 
+    // 3. Immediately increment count and animate
+    currentDeepaCount = newCount;
+    if (countEl) {
+      countEl.innerHTML = `${currentDeepaCount} <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>`;
+      countEl.style.transform = 'scale(1.2)';
+      countEl.style.color = '#FCF6BA';
+      setTimeout(() => {
+        countEl.style.transform = 'scale(1)';
+        countEl.style.color = '#FFFDF9';
+      }, 350);
+    }
+
+    // 4. Remove empty altar message and prepend sparkling Diya
+    const emptyMsg = document.getElementById('deepa-empty-altar');
+    if (emptyMsg) emptyMsg.remove();
+
+    if (deepaCanvas) {
+      const tooltip = `${newDiyaObj.name} — ${newDiyaObj.prayer}`;
+      const newDiyaHtml = `<span class="deepa-diya deepa-diya-new" data-tooltip="${escHtml(tooltip)}" tabindex="0" style="background: radial-gradient(circle, rgba(252, 246, 186, 0.7) 0%, rgba(201, 146, 42, 0.3) 60%, transparent 90%);">🪔</span>`;
+      deepaCanvas.insertAdjacentHTML('afterbegin', newDiyaHtml);
+    }
+
+    // 5. Play sacred temple chime and "Jai Sri Ram" voice chant
+    playDevotionalDeepaVoice();
+
+    if (window.showToast) {
+      window.showToast('॥ जय श्री राम ॥ श्री दिग्विजय मूलरामो विजयते ॥ Deepa offered with devotion!', 'success');
+    }
+
+    // 6. Background sync with backend API
     try {
       const res = await fetch('/api/deepa/light', {
         method: 'POST',
@@ -250,46 +291,15 @@ function initDigitalDeepa() {
 
       if (res.ok) {
         const data = await res.json();
-        if (data.count) newCount = data.count;
-        if (data.diya) newDiyaObj = data.diya;
+        if (data.count && data.count > currentDeepaCount) {
+          currentDeepaCount = data.count;
+          if (countEl) {
+            countEl.innerHTML = `${currentDeepaCount} <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>`;
+          }
+        }
       }
     } catch (err) {
-      console.warn('Deepa server sync warning (using local update):', err);
-    }
-
-    // Update current count
-    currentDeepaCount = newCount;
-    if (countEl) {
-      countEl.innerHTML = `${currentDeepaCount} <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>`;
-      countEl.style.transform = 'scale(1.2)';
-      countEl.style.color = '#FCF6BA';
-      setTimeout(() => {
-        countEl.style.transform = 'scale(1)';
-        countEl.style.color = '#FFFDF9';
-      }, 350);
-    }
-
-    // Remove empty altar message if present
-    const emptyMsg = document.getElementById('deepa-empty-altar');
-    if (emptyMsg) emptyMsg.remove();
-
-    // Add newly lit diya to top of canvas with spark animation
-    if (deepaCanvas) {
-      const tooltip = `${newDiyaObj.name} — ${newDiyaObj.prayer}`;
-      const newDiyaHtml = `<span class="deepa-diya deepa-diya-new" data-tooltip="${escHtml(tooltip)}" tabindex="0" style="background: radial-gradient(circle, rgba(252, 246, 186, 0.7) 0%, rgba(201, 146, 42, 0.3) 60%, transparent 90%);">🪔</span>`;
-      deepaCanvas.insertAdjacentHTML('afterbegin', newDiyaHtml);
-    }
-
-    // Play sacred devotional temple bell chime and "Jai Sri Ram" voice chant
-    playDevotionalDeepaVoice();
-
-    // Close modal and reset fields
-    window.closeDeepaModal();
-    if (nameInput) nameInput.value = '';
-    if (prayerInput) prayerInput.value = '';
-
-    if (window.showToast) {
-      window.showToast('॥ जय श्री राम ॥ श्री दिग्विजय मूलरामो विजयते ॥ Deepa offered with devotion!', 'success');
+      console.warn('Deepa server sync warning:', err);
     }
   };
 
