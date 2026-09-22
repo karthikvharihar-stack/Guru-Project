@@ -310,7 +310,7 @@ function initDigitalDeepa() {
     }
   };
 
-  function playDevotionalDeepaVoice() {
+  window.playDevotionalDeepaVoice = function () {
     // 1. Play Resonant Temple Bell Chime (Web Audio API)
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
