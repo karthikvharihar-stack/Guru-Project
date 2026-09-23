@@ -333,7 +333,7 @@ function initDigitalDeepa() {
 
     function playDirectFallback() {
       try {
-        const fallbackAudio = new Audio('/static/audio/jai_shri_ram.mp3');
+        const fallbackAudio = new Audio('/static/audio/jai_shri_ram.mp3?v=5.0');
         fallbackAudio.volume = 1.0;
         const p = fallbackAudio.play();
         if (p !== undefined) {
