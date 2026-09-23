@@ -231,17 +231,20 @@ function initDigitalDeepa() {
   };
 
   window.submitDeepaOffering = async function () {
+    // 1. Immediately play the clear male "Jai Shree Ram" voice on the user gesture
+    window.playDevotionalDeepaVoice();
+
     const nameInput = document.getElementById('deepa-devotee-name');
     const prayerInput = document.getElementById('deepa-devotee-prayer');
     const name = nameInput ? nameInput.value.trim() : '';
     const prayer = prayerInput ? prayerInput.value.trim() : '';
 
-    // 1. Immediately dismiss modal dialog and reset inputs
+    // 2. Immediately dismiss modal dialog and reset inputs
     window.closeDeepaModal();
     if (nameInput) nameInput.value = '';
     if (prayerInput) prayerInput.value = '';
 
-    // 2. Immediately scroll smoothly to the Diya Altar section on the homepage
+    // 3. Immediately scroll smoothly to the Diya Altar section on the homepage
     const deepaSection = document.getElementById('deepa-section') || deepaCanvas;
     if (deepaSection) {
       deepaSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -256,7 +259,7 @@ function initDigitalDeepa() {
       prayer: prayer || 'Guru Smarana & Lokakshema'
     };
 
-    // 3. Immediately increment count and animate
+    // 4. Immediately increment count and animate
     currentDeepaCount = newCount;
     if (countEl) {
       countEl.innerHTML = `${currentDeepaCount} <span style="font-size: 0.85rem; color: #E5C158; font-weight: normal;">Deepas Lit</span>`;
@@ -268,7 +271,7 @@ function initDigitalDeepa() {
       }, 350);
     }
 
-    // 4. Remove empty altar message and prepend sparkling Diya
+    // 5. Remove empty altar message and prepend sparkling Diya
     const emptyMsg = document.getElementById('deepa-empty-altar');
     if (emptyMsg) emptyMsg.remove();
 
@@ -277,9 +280,6 @@ function initDigitalDeepa() {
       const newDiyaHtml = `<span class="deepa-diya deepa-diya-new" data-tooltip="${escHtml(tooltip)}" tabindex="0" style="background: radial-gradient(circle, rgba(252, 246, 186, 0.7) 0%, rgba(201, 146, 42, 0.3) 60%, transparent 90%);">🪔</span>`;
       deepaCanvas.insertAdjacentHTML('afterbegin', newDiyaHtml);
     }
-
-    // 5. Play sacred temple chime and "Jai Sri Ram" voice chant
-    playDevotionalDeepaVoice();
 
     if (window.showToast) {
       window.showToast('॥ जय श्री राम ॥ Deepa offered with devotion!', 'success');
@@ -311,40 +311,7 @@ function initDigitalDeepa() {
   };
 
   window.playDevotionalDeepaVoice = function () {
-    // 1. Play Resonant Temple Bell Chime (Web Audio API)
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (AudioCtx) {
-        const ctx = new AudioCtx();
-        if (ctx.state === 'suspended') {
-          ctx.resume();
-        }
-        const now = ctx.currentTime;
-        
-        // Harmonic frequencies for authentic Indian temple bell (Ghanta)
-        const freqs = [587.33, 880.00, 1174.66, 1760.00];
-        freqs.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          
-          osc.type = idx === 0 ? 'sine' : 'triangle';
-          osc.frequency.setValueAtTime(freq, now);
-          
-          gain.gain.setValueAtTime(0.25 / (idx + 1), now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8 + idx * 0.3);
-          
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          
-          osc.start(now);
-          osc.stop(now + 3.2);
-        });
-      }
-    } catch (e) {
-      console.warn('AudioContext temple chime:', e);
-    }
-
-    // 2. Play Pure "Jai Shri Ram" Voice Audio
+    // Play Clear Male "Jai Shree Ram" Voice Audio (Bell sound removed)
     try {
       const player = document.getElementById('deepaAudioPlayer');
       if (player) {
@@ -353,25 +320,27 @@ function initDigitalDeepa() {
         const playPromise = player.play();
         if (playPromise !== undefined) {
           playPromise.catch(err => {
-            console.warn('HTML5 audio element error, trying secondary fallback:', err);
-            tryFallbackAudio();
+            console.warn('HTML5 audio element error, trying direct Audio():', err);
+            playDirectFallback();
           });
+          return;
         }
-      } else {
-        tryFallbackAudio();
       }
     } catch (err) {
       console.warn('Audio playback exception:', err);
-      tryFallbackAudio();
     }
+    playDirectFallback();
 
-    function tryFallbackAudio() {
+    function playDirectFallback() {
       try {
-        const fallbackAudio = new Audio('/static/audio/jai_shri_ram.wav');
+        const fallbackAudio = new Audio('/static/audio/jai_shri_ram.mp3');
         fallbackAudio.volume = 1.0;
-        fallbackAudio.play().catch(() => {
-          fallbackSpeechSynthesis();
-        });
+        const p = fallbackAudio.play();
+        if (p !== undefined) {
+          p.catch(() => {
+            fallbackSpeechSynthesis();
+          });
+        }
       } catch (e) {
         fallbackSpeechSynthesis();
       }
@@ -381,17 +350,16 @@ function initDigitalDeepa() {
       try {
         if (window.speechSynthesis) {
           window.speechSynthesis.cancel();
-          const chantUtter = new SpeechSynthesisUtterance("Jai Shri Ram");
-          chantUtter.rate = 0.95;
-          chantUtter.pitch = 1.0;
+          const chantUtter = new SpeechSynthesisUtterance("जय श्री राम");
+          chantUtter.rate = 0.92;
+          chantUtter.pitch = 0.95; // Clear, deep male tone
           chantUtter.volume = 1.0;
           
           const voices = window.speechSynthesis.getVoices();
-          const devotionalVoice = voices.find(v => v.lang === 'hi-IN' || v.lang === 'sa' || v.lang === 'mr-IN')
-                               || voices.find(v => v.lang === 'en-IN' || v.name.includes('India'))
-                               || voices.find(v => v.lang.startsWith('en'));
-          if (devotionalVoice) {
-            chantUtter.voice = devotionalVoice;
+          const maleVoice = voices.find(v => (v.name.includes('Madhur') || v.name.includes('Prabhat') || v.name.includes('David') || v.name.includes('Male')) && (v.lang.startsWith('hi') || v.lang.startsWith('en')))
+                         || voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi') || v.lang.includes('IN'));
+          if (maleVoice) {
+            chantUtter.voice = maleVoice;
           }
           window.speechSynthesis.speak(chantUtter);
         }
@@ -399,7 +367,7 @@ function initDigitalDeepa() {
         console.warn('SpeechSynthesis fallback error:', e);
       }
     }
-  }
+  };
 
   // Initial fetch on page load
   window.fetchDeepaData();

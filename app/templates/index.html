@@ -420,8 +420,8 @@
         <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #4caf50; box-shadow: 0 0 8px #4caf50; margin-left: 6px;"></span>
       </div>
 
-      <button type="button" onclick="playDevotionalDeepaVoice()" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(89, 16, 16, 0.75); border: 1.5px solid #BF953F; border-radius: 30px; padding: 10px 20px; color: #FCF6BA; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" title="Listen to sacred Jai Shri Ram chant">
-        <span>🔔</span> Listen Sacred Chant (Jai Shri Ram)
+      <button type="button" onclick="playDevotionalDeepaVoice()" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(89, 16, 16, 0.75); border: 1.5px solid #BF953F; border-radius: 30px; padding: 10px 20px; color: #FCF6BA; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" title="Listen to sacred Jai Shree Ram male voice chant">
+        <span>🔊</span> Listen Voice Chant (Jai Shree Ram)
       </button>
     </div>
 
@@ -442,7 +442,7 @@
 </section>
 
 <!-- Dedicated Pre-loaded Jai Shri Ram Audio Element -->
-<audio id="deepaAudioPlayer" src="{{ url_for('static', filename='audio/jai_shri_ram.mp3') }}" preload="auto" playsinline style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;"></audio>
+<audio id="deepaAudioPlayer" src="{{ url_for('static', filename='audio/jai_shri_ram.mp3') }}" preload="auto" playsinline style="position: absolute; width: 1px; height: 1px; opacity: 0.01; pointer-events: none;"></audio>
 
 <!-- Deepa Offering Modal -->
 <div id="deepaOfferingModal" style="display: none; position: fixed; inset: 0; background: rgba(18, 6, 6, 0.88); backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;" onclick="closeDeepaModal(event)">
