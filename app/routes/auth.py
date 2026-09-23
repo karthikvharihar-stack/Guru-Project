@@ -8,43 +8,75 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('seva.dashboard'))
         
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        user = User.query.filter_by(email=email).first()
+        email = (request.form.get('email') or '').strip().lower()
+        password = request.form.get('password') or ''
+        remember = bool(request.form.get('remember'))
         
+        # 1. Check regular Devotee User
+        user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
-            login_user(user)
-            flash('Logged in successfully.', 'success')
+            if not user.is_active:
+                flash('Your account has been deactivated. Please contact support.', 'warning')
+                return redirect(url_for('auth.login'))
+            login_user(user, remember=remember)
+            flash(f'Logged in successfully. Welcome, {user.name}!', 'success')
             next_page = request.args.get('next')
-            return redirect(next_page or url_for('main.index'))
-        else:
-            flash('Invalid email or password.', 'danger')
+            return redirect(next_page or url_for('seva.dashboard'))
+            
+        # 2. Check AdminUser (in case admin logs in from this form)
+        from app.models.user import AdminUser
+        admin = AdminUser.query.filter_by(email=email).first()
+        if admin and admin.check_password(password):
+            login_user(admin, remember=remember)
+            flash(f'Logged in successfully. Welcome, Administrator {admin.name}!', 'success')
+            return redirect(url_for('admin.dashboard'))
+            
+        flash('Invalid email or password. Please check your credentials.', 'danger')
             
     return render_template('auth/login.html')
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('seva.dashboard'))
         
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        password = request.form.get('password')
+        name = (request.form.get('name') or '').strip()
+        email = (request.form.get('email') or '').strip().lower()
+        password = request.form.get('password') or ''
+        confirm_password = request.form.get('confirm_password')
+        language = request.form.get('language') or 'english'
         
-        if User.query.filter_by(email=email).first():
-            flash('Email already registered.', 'danger')
-            return redirect(url_for('auth.register'))
+        if not name or not email or not password:
+            flash('Please fill in all required fields.', 'danger')
+            return render_template('auth/register.html', name=name, email=email)
             
-        new_user = User(name=name, email=email)
+        if confirm_password is not None and confirm_password != '' and password != confirm_password:
+            flash('Passwords do not match. Please re-enter your password.', 'danger')
+            return render_template('auth/register.html', name=name, email=email)
+            
+        if len(password) < 6:
+            flash('Password must be at least 6 characters long.', 'danger')
+            return render_template('auth/register.html', name=name, email=email)
+            
+        if User.query.filter_by(email=email).first():
+            flash('This email address is already registered. Please log in.', 'warning')
+            return redirect(url_for('auth.login'))
+            
+        new_user = User(
+            name=name, 
+            email=email, 
+            preferred_language=language,
+            is_active=True
+        )
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
         
-        flash('Registration successful. Please log in.', 'success')
+        flash('Registration successful. Please log in to your account.', 'success')
         return redirect(url_for('auth.login'))
         
     return render_template('auth/register.html')

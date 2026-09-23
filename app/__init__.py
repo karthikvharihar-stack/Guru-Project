@@ -81,11 +81,12 @@ def create_app(config_name='development'):
             'site_tagline': 'Guru Smarana • Guru Lekhana • Guru Parampara',
         }
 
-    # CSRF exempt for AI/AJAX endpoints
+    # CSRF exempt for AI/AJAX/Auth endpoints
     from app.extensions import csrf as csrf_ext
     csrf_ext.exempt(main_bp)
     csrf_ext.exempt(jijnasa_bp)
     csrf_ext.exempt(lekhana_bp)
+    csrf_ext.exempt(auth_bp)
 
     # Error handlers
     @app.errorhandler(404)
@@ -106,8 +107,13 @@ def create_app(config_name='development'):
 
 @login_manager.user_loader
 def load_user(user_id):
-    from app.models.user import User
+    from app.models.user import User, AdminUser
+    if not user_id:
+        return None
     try:
+        if str(user_id).startswith('admin_'):
+            admin_id = int(str(user_id).replace('admin_', ''))
+            return AdminUser.query.get(admin_id)
         return User.query.get(int(user_id))
     except (ValueError, TypeError):
         return None

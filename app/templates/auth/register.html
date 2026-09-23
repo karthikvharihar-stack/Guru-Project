@@ -1,58 +1,84 @@
 {% extends 'base.html' %}
+{% block title %}Devotee Registration — Uttaradi Math Guru Lekhana Seva{% endblock %}
+
 {% block content %}
-<div class="container" style="display: flex; align-items: center; justify-content: center; min-height: 80vh; padding: 40px 15px;">
+<div class="container" style="display: flex; align-items: center; justify-content: center; min-height: 85vh; padding: 40px 15px;">
   
-  <div class="guru-card" style="width: 100%; max-width: 500px;">
-    <div class="text-center" style="margin-bottom: 20px;">
-      <h2 class="font-serif">Register</h2>
-      <p style="color: var(--color-text-muted); font-size: 0.9rem;">Create your digital identity for Lekhana Seva</p>
+  <div style="width: 100%; max-width: 480px; background: linear-gradient(135deg, #FFFDF9 0%, #FAF3E3 100%); border: 2px solid #BF953F; border-radius: 24px; padding: 36px 32px; box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 0 25px rgba(191,149,63,0.15); text-align: center;">
+    
+    <div style="font-family: 'Noto Serif Devanagari', serif; font-size: 0.95rem; color: #8B1A1A; font-weight: 700; margin-bottom: 6px; letter-spacing: 1px;">
+      ॥ श्रीमद्जगद्गुरु श्रीमन् मध्वाचार्य मूलमहासंस्थानम् ॥
     </div>
     
-    <form method="POST" action="/auth/register">
-      {{ form.csrf_token if form else '' }}
-      <div class="form-group">
-        <label class="form-label">Full Name</label>
-        <input type="text" name="name" class="form-control" required>
+    <div style="font-size: 2.5rem; margin-bottom: 8px;">🪷</div>
+    
+    <h2 class="font-serif" style="color: #4A1A1A; font-size: 1.8rem; font-weight: 700; margin-bottom: 6px;">
+      Devotee Registration
+    </h2>
+    <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 24px;">
+      Create your sacred digital account for Guru Lekhana Seva & certificate tracking
+    </p>
+    
+    <form method="POST" action="{{ url_for('auth.register') }}" style="text-align: left;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4A1A1A; margin-bottom: 6px;">
+          Full Name
+        </label>
+        <input type="text" name="name" value="{{ name or '' }}" class="form-control" placeholder="e.g. Sri Harsha / Devotee" required autocomplete="name" style="width: 100%; padding: 12px 14px; border: 1.5px solid rgba(191,149,63,0.4); border-radius: 10px; background: #FFF; font-size: 0.95rem;">
       </div>
       
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input type="email" name="email" class="form-control" required>
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4A1A1A; margin-bottom: 6px;">
+          Email Address
+        </label>
+        <input type="email" name="email" value="{{ email or '' }}" class="form-control" placeholder="devotee@example.com" required autocomplete="email" style="width: 100%; padding: 12px 14px; border: 1.5px solid rgba(191,149,63,0.4); border-radius: 10px; background: #FFF; font-size: 0.95rem;">
       </div>
       
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
         <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" name="password" class="form-control" required>
+          <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4A1A1A; margin-bottom: 6px;">
+            Password
+          </label>
+          <input type="password" name="password" class="form-control" placeholder="Min. 6 chars" required autocomplete="new-password" style="width: 100%; padding: 12px 14px; border: 1.5px solid rgba(191,149,63,0.4); border-radius: 10px; background: #FFF; font-size: 0.95rem;">
         </div>
         <div class="form-group">
-          <label class="form-label">Confirm Password</label>
-          <input type="password" name="confirm_password" class="form-control" required>
+          <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4A1A1A; margin-bottom: 6px;">
+            Confirm Password
+          </label>
+          <input type="password" name="confirm_password" class="form-control" placeholder="Re-type password" required autocomplete="new-password" style="width: 100%; padding: 12px 14px; border: 1.5px solid rgba(191,149,63,0.4); border-radius: 10px; background: #FFF; font-size: 0.95rem;">
         </div>
       </div>
       
-      <div class="form-group">
-        <label class="form-label">Preferred Language</label>
-        <select name="language" class="form-control">
-          <option value="english">English</option>
-          <option value="kannada">Kannada</option>
-          <option value="sanskrit">Sanskrit / Devanagari</option>
+      <div class="form-group" style="margin-bottom: 18px;">
+        <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4A1A1A; margin-bottom: 6px;">
+          Preferred Language for Lekhana Seva
+        </label>
+        <select name="language" class="form-control" style="width: 100%; padding: 12px 14px; border: 1.5px solid rgba(191,149,63,0.4); border-radius: 10px; background: #FFF; font-size: 0.95rem;">
+          <option value="english">English (IAST / Romanized)</option>
+          <option value="kannada">Kannada (ಕನ್ನಡ)</option>
+          <option value="sanskrit">Sanskrit (देवनागरी)</option>
         </select>
       </div>
       
-      <div class="form-group" style="font-size: 0.9rem;">
-        <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
-          <input type="checkbox" name="terms" required style="margin-top: 4px;"> 
-          <span>I agree to the <a href="/terms">Terms of Use</a> and understand this is an independent devotional platform.</span>
+      <div class="form-group" style="font-size: 0.85rem; margin-bottom: 22px;">
+        <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; color: #4A1A1A; line-height: 1.5;">
+          <input type="checkbox" name="terms" required style="margin-top: 3px; accent-color: #8B1A1A;"> 
+          <span>I agree to participate with devotional devotion and understand this is an independent platform for Sri Hari-Vayu-Guru Smarana.</span>
         </label>
       </div>
       
-      <button type="submit" class="btn btn-gold" style="width: 100%; margin-bottom: 15px;">Register</button>
+      <button type="submit" class="btn btn-gold" style="width: 100%; padding: 13px; font-size: 1.05rem; font-weight: 700; border-radius: 25px; margin-bottom: 18px; box-shadow: 0 4px 15px rgba(191,149,63,0.35); cursor: pointer;">
+        Create Devotee Account
+      </button>
       
-      <div class="text-center" style="font-size: 0.9rem;">
-        Already have an account? <a href="/auth/login" style="font-weight: bold; color: var(--color-primary);">Login here</a>
+      <div style="text-align: center; font-size: 0.9rem; color: var(--color-text-muted);">
+        Already registered? 
+        <a href="{{ url_for('auth.login') }}" style="font-weight: 700; color: #8B1A1A; text-decoration: none; margin-left: 4px;">Login here</a>
       </div>
     </form>
+    
   </div>
   
 </div>
