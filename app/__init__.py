@@ -138,3 +138,8 @@ def _create_directories(app):
     ]
     for d in dirs:
         os.makedirs(d, exist_ok=True)
+
+
+# Default WSGI application instance
+app = create_app(os.environ.get('FLASK_ENV', 'development'))
+
