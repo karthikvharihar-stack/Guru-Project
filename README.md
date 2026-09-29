@@ -35,10 +35,40 @@ An authentic, modern, and sacred digital platform dedicated to **Sri Hari-Vayu-G
 
 ---
 
+## 🧠 RAG Architecture & Anti-Hallucination Framework
+
+For in-depth architectural specifications and evaluation metrics, see [docs/RAG_EVALUATION.md](docs/RAG_EVALUATION.md).
+
+```
+[Devotee Query] ──> [Entity Matcher / Query Sanitizer]
+                         │
+                         ├──> [ChromaDB Vector Retrieval] ──> [Distance < 0.40] ──> [Grounded Gemini LLM]
+                         │                                                                   │
+                         └──> [Vector Score Low / Miss] ──> [Deterministic Knowledge Engine] ─┴──> [Response + Citations]
+```
+
+### 1. Semantic Chunking Strategy
+- **Recursive Chunking**: Splits canonical scriptures and historical profiles into semantic segments of `600–800 characters` (~120–160 tokens) preserving verse boundaries (`\n\n`, `. `).
+- **Context Preservation**: Employs a `100-character` sliding window overlap between neighboring chunks so theological nuances are never truncated across segment edges.
+- **Structured Metadata Injection**: Every chunk is indexed with metadata tags (`guru_order`, `guru_name`, `traditional_title`, `topic_category`, `source_document`, `verification_status`).
+
+### 2. Strict Anti-Hallucination Guardrails
+- **Sacred Lekhana Isolation**: The generative LLM is strictly prohibited from synthesizing or guessing sacred mantras. Lekhana text is served *exclusively* via direct SQL queries against administratively verified records.
+- **System Constraints**: Prompts enforce negative constraints ("Never fabricate pontiffs, dates, or philosophical positions"). Unrecorded facts must be explicitly identified as unverified rather than extrapolated.
+- **Mandatory Source Attribution**: Every response cites whether the grounding came from canonical biographies, Sarvamoola granthas, or verified administrative records.
+
+### 3. Graceful Fallback on Low Vector Scores
+When ChromaDB yields a low vector score (cosine distance $\ge 0.40$), is unindexed, or external LLM APIs are unreachable:
+1. **Distance Filtering**: Low-similarity chunks are discarded to prevent hallucinated grounding on irrelevant verses.
+2. **Deterministic Fallback Engine**: Seamlessly cascades to the local knowledge engine (`_local_knowledge_engine`) with pre-verified summaries of all 42 pontiffs and core philosophical tenets (Dvaita, Pancha Bheda, Vayu Jeevottamatva, Moola Rama worship).
+3. **Transparent Uncertainty**: Queries completely outside the theological domain receive a polite guidance prompt without fabricating information.
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: HTML5, CSS3 (Custom Sacred Temple Theme), Vanilla JavaScript (ES6+), HTML5 Canvas 2D API, Web Audio API
-- **Backend**: Python 3.14, Flask 3.0.3, Flask-SQLAlchemy 3.1.1, Flask-Login, Flask-WTF, Flask-Limiter, ReportLab
+- **Backend**: Python 3.11 / 3.12 (Recommended for production; compatible with 3.10+), Flask 3.0.3, Flask-SQLAlchemy 3.1.1, Flask-Login, Flask-WTF, Flask-Limiter, ReportLab
 - **AI & Vector DB**: Google Gemini API (`google-generativeai`), ChromaDB, `sentence-transformers`
 - **Database**: SQLite (Development) / MySQL & MariaDB compatible (Production)
 - **Audio Processing**: `yt-dlp`, `imageio-ffmpeg`, `soundfile`, `numpy`
@@ -48,12 +78,12 @@ An authentic, modern, and sacred digital platform dedicated to **Sri Hari-Vayu-G
 ## 🚀 Quick Start Guide
 
 ### Prerequisites
-- Python 3.10+ (tested on Python 3.14)
+- **Python 3.11 or 3.12** *(Recommended for optimal binary wheel compatibility with ChromaDB, NumPy, and PyTorch)*
 - Git
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/Guru-Project.git
+git clone https://github.com/karthikvharihar-stack/Guru-Project.git
 cd Guru-Project
 ```
 
@@ -110,10 +140,13 @@ Guru-Project/
 │   ├── services/        # AI (Gemini RAG), PDF generation, Lekhana services
 │   ├── static/          # CSS, JS, sacred audio clips, and guru imagery
 │   └── templates/       # Jinja2 HTML templates for all views
+├── docs/
+│   └── RAG_EVALUATION.md # Deep-dive RAG evaluation, chunking, and fallback docs
 ├── instance/            # Local SQLite database
 ├── uploads/             # Media, PDFs, and deepa JSON store
 ├── config.py            # Environment configurations
 ├── run.py               # Flask application entry point
+├── runtime.txt          # Python 3.11 cloud runtime specification
 ├── start_server.bat     # 1-click Windows launcher
 ├── requirements.txt     # Python package dependencies
 └── test_e2e.py          # End-to-end test suite
