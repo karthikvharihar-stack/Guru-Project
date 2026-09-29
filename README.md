@@ -1,6 +1,6 @@
-# Guru Lekhana Seva
+# Parampara-AI
 
-A full-stack web platform for mantra writing (Lekhana Seva), archival records of the 42 Guru Parampara, and a grounded AI assistant (Guru Jijnasa) answering queries on Dvaita Vedanta philosophy.
+A domain-specific RAG knowledge engine and digital heritage scribing platform featuring a dual-mode writing pad, historical archives, and a grounded AI assistant.
 
 ## Features
 
@@ -21,8 +21,8 @@ A full-stack web platform for mantra writing (Lekhana Seva), archival records of
 
 ### 1. Clone & Set Up
 ```bash
-git clone https://github.com/karthikvharihar-stack/Guru-Project.git
-cd Guru-Project
+git clone https://github.com/karthikvharihar-stack/Parampara-AI.git
+cd Parampara-AI
 
 python -m venv venv
 # Windows:
