@@ -1,14 +1,14 @@
 # ॥ श्री दिग्विजय मूलरामो विजयते ॥
-# Uttaradi Math — Guru Lekhana Seva Platform
+# Guru Lekhana Seva — Digital Devotional Platform
 
-An authentic, modern, and sacred digital platform dedicated to **Sri Hari-Vayu-Guru Smarana**, digital **Lekhana Seva** (mantra/nama writing), exploration of the **Guru Parampara** (the illustrious lineage of 42 pontiffs of Sri Uttaradi Math), and an AI-powered spiritual knowledge assistant (**Guru Jijnasa**).
+An authentic, modern, and sacred digital platform dedicated to **Sri Hari-Vayu-Guru Smarana**, digital **Lekhana Seva** (mantra/nama writing), exploration of the **Guru Parampara** (the illustrious lineage of 42 sacred pontiffs starting from Jagadguru Sri Madhwacharya), and an AI-powered spiritual knowledge assistant (**Guru Jijnasa**).
 
 ---
 
 ## 🌟 Key Features
 
 ### 1. 📜 Complete Guru Parampara Archive
-- Detailed spiritual profiles for all **42 Gurus** of Sri Uttaradi Math starting from **Jagadguru Sri Madhwacharya**.
+- Detailed spiritual profiles for all **42 Gurus** of the lineage starting from **Jagadguru Sri Madhwacharya**.
 - Traditional names, aradhana tithis, charitra (biographies), granthas/works, historical sources, and lineage navigation.
 
 ### 2. ✍️ Digital Lekhana Seva (Writing Pad)
@@ -123,4 +123,4 @@ Guru-Project/
 
 ## 📜 Disclaimer
 
-This is an independent devotional and educational digital platform created with reverence for Sri Hari-Vayu-Guru Smarana and Sri Uttaradi Math Peetham. It is not an official commercial product.
+This is an independent devotional and educational digital platform created with reverence for Sri Hari-Vayu-Guru Smarana. It is not an official commercial product.
