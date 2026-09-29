@@ -15,16 +15,19 @@ def create_app(config_name='development'):
     config_obj = config_by_name[config_name]
 
     # Dynamically build DB URI so it picks up .env values loaded above
-    if config_name == 'development':
-        if os.environ.get('USE_SQLITE', 'False').lower() in ['true', '1', 't']:
-            config_obj.SQLALCHEMY_DATABASE_URI = 'sqlite:///guru_project_dev.db'
-        else:
-            user = os.environ.get('DB_USER', 'root')
-            pw = os.environ.get('DB_PASSWORD', '')
-            host = os.environ.get('DB_HOST', 'localhost')
-            port = os.environ.get('DB_PORT', '3306')
-            name = os.environ.get('DB_NAME', 'uttaradi_math')
-            config_obj.SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{user}:{pw}@{host}:{port}/{name}"
+    use_sqlite = os.environ.get('USE_SQLITE', '').lower() in ['true', '1', 't']
+    has_mysql_config = bool(os.environ.get('DB_USER') and os.environ.get('DB_NAME') and not use_sqlite)
+    
+    if has_mysql_config:
+        user = os.environ.get('DB_USER', 'root')
+        pw = os.environ.get('DB_PASSWORD', '')
+        host = os.environ.get('DB_HOST', 'localhost')
+        port = os.environ.get('DB_PORT', '3306')
+        name = os.environ.get('DB_NAME', 'uttaradi_math')
+        config_obj.SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{user}:{pw}@{host}:{port}/{name}"
+    else:
+        # Default to SQLite for seamless 1-click cloud deployment and local testing
+        config_obj.SQLALCHEMY_DATABASE_URI = 'sqlite:///guru_project_dev.db'
 
     app.config.from_object(config_obj)
 
@@ -39,6 +42,9 @@ def create_app(config_name='development'):
     migrate.init_app(app, db)
     session_ext.init_app(app)
     csrf.init_app(app)
+    
+    with app.app_context():
+        db.create_all()
 
     # Flask-Login settings
     login_manager.login_view = 'auth.login'
