@@ -1,61 +1,34 @@
 # Parampara-AI
 
-A domain-specific RAG knowledge engine and digital heritage scribing platform featuring a dual-mode writing pad, historical archives, and a grounded AI assistant.
+A RAG-powered knowledge engine for Guru Parampara — combining a dual-mode writing pad, historical archives, and a grounded AI assistant that never hallucinates Guru names or sacred texts.
 
-## Features
+**Live:** https://guru-lekhana-seva.onrender.com
 
-- **Digital Writing Pad**: Dual-mode writing interface (keyboard typing with fuzzy text validation, and HTML5 Canvas handwriting pad with touch/stylus support).
-- **Guru Parampara Archive**: Biographies, traditional titles, and works for 42 historical pontiffs starting from Sri Madhwacharya.
-- **Devotional Altar**: Interactive digital deepa offering with audio playback.
-- **Guru Jijnasa (AI Assistant)**: Grounded question-answering using Google Gemini and ChromaDB vector retrieval, with local fallback for verified records to prevent hallucinations.
-- **Certificates & Progress**: Downloadable Seva completion certificates generated via ReportLab and user progress tracking.
+## What it does
 
-## Tech Stack
+- **Writing Pad** — Type or handwrite (HTML5 Canvas) a Guru's traditional text. Validates input with fuzzy matching before counting progress.
+- **Guru Archive** — Biographies, titles, and works for 42 historical pontiffs from Sri Madhwacharya onwards.
+- **Guru Jijnasa** — Ask questions about Guru Parampara. Answers come from ChromaDB vector retrieval + Gemini, with a local fallback to prevent hallucination.
+- **Digital Deepa** — Interactive offering with Swamiji's audio.
+- **Seva Certificates** — Downloadable PDF certificates generated via ReportLab.
 
-- **Backend**: Python 3.11/3.12, Flask, Flask-SQLAlchemy, Flask-Login, ReportLab
-- **Frontend**: HTML5 Canvas, CSS3, Vanilla JavaScript (ES6)
-- **Database**: SQLite (local) / MySQL compatible
-- **AI / Embeddings**: Google Gemini API, ChromaDB, sentence-transformers
+## Stack
 
-## Getting Started
+Python 3.11 · Flask · SQLAlchemy · Google Gemini · ChromaDB · sentence-transformers · HTML5 Canvas · ReportLab
 
-### 1. Clone & Set Up
+## Run locally
+
 ```bash
-git clone https://github.com/karthikvharihar-stack/Parampara-AI.git
-cd Parampara-AI
-
-python -m venv venv
-# Windows:
-.\venv\Scripts\activate
-# Linux/macOS:
-source venv/bin/activate
-
+git clone https://github.com/karthikvharihar-stack/Guru-Project.git
+cd Guru-Project
 pip install -r requirements.txt
-```
-
-### 2. Environment Variables
-Copy `.env.example` to `.env` and configure your settings:
-```bash
-cp .env.example .env
-```
-
-### 3. Run Locally
-```bash
+cp .env.example .env   # add your GEMINI_API_KEY
 python run.py
 ```
-Or double-click `start_server.bat` on Windows.  
-Once running, open `http://127.0.0.1:5000` in your browser.
 
-## Tests
+## Docs
 
-Run the test suite:
-```bash
-python test_e2e.py
-```
-
-## Documentation
-
-- [RAG Architecture & Evaluation Notes](docs/RAG_EVALUATION.md)
+[RAG Architecture & Evaluation](docs/RAG_EVALUATION.md)
 
 ## License
 
